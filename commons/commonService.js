@@ -1,8 +1,8 @@
 export const isLatestBlock = (latestBlock) => {  
     if (latestBlock && latestBlock.value && latestBlock.value.header && latestBlock.value.header.metadata && latestBlock.value.header.metadata.height) {
-        return useFetch('/api/block/latestHeight')
+        return $fetch('/api/block/latestHeight')
             .then(response => {
-                const latestHeight = response.data.value;
+                const latestHeight = response;
                 return latestBlock.value.header.metadata.height === latestHeight;  
             })
             .catch(error => {
@@ -14,11 +14,10 @@ export const isLatestBlock = (latestBlock) => {
 };
 
 
-export const fetchDataAndSaveToLocalStorage = (localStorageKey) => {
-    return useFetch('/api/block/latest')
+export const getLatestBlockAndSaveToLocalStorage = (localStorageKey) => {
+    return $fetch('/api/block/latest')
         .then(response => {
-            const latestBlock = response.data;
-            localStorage.setItem(localStorageKey, JSON.stringify(latestBlock.value));
+            localStorage.setItem(localStorageKey, JSON.stringify(response));
             return true;
         })
         .catch(error => {
@@ -64,11 +63,11 @@ export const getTransactionsOfLatestBlock = (latestBlock, loading3, transactions
 
 export const getBlocks = (start, end, loading2, blocks) => {
     if (start && end) {
-        useFetch(`/api/blocks?start=${start}&end=${end}`)
+        $fetch(`/api/blocks?start=${start}&end=${end}`)
             .then(response => {
-                const responseBlocks = response.data;
-                responseBlocks.value.sort((a, b) => b.header.metadata.height - a.header.metadata.height);
-                blocks.value = responseBlocks.value;
+                const responseBlocks = response;
+                responseBlocks.sort((a, b) => b.header.metadata.height - a.header.metadata.height);
+                blocks.value = responseBlocks;
                 if (loading2.value) loading2.value = false;
                 return true;
             })
@@ -85,28 +84,28 @@ export const getBlocks = (start, end, loading2, blocks) => {
 export const getBlockAndTransactionsAndSolutions = (blockHeightOrHash, loading5, loading3, loading6, block, transactions, solutions) => {
     if (blockHeightOrHash.value) {
         const heightOrHash = blockHeightOrHash.value
-        useFetch(`/api/block/${heightOrHash}`)
+        $fetch(`/api/block/${heightOrHash}`)
             .then((response) => {
-                const responseBlock = response.data
-                block.value = responseBlock.value;
+                const responseBlock = response;
+                block.value = responseBlock;
 
                 if (loading5.value) loading5.value = false;
                 
-                transactions.value = responseBlock.value.transactions.map((transaction) => {
+                transactions.value = responseBlock.transactions.map((transaction) => {
                     return {
                         index: transaction.index,
                         transactionId: transaction.transaction.id,
                         fee: sumInputsFee(transaction.transaction.fee.transition.inputs),
-                        blockHeight: responseBlock.value.header.metadata.height,
+                        blockHeight: responseBlock.header.metadata.height,
                         status: transaction.status,
                         type: transaction.type,
-                        timestamp: responseBlock.value.header.metadata.timestamp,
-                        sortNo: `${responseBlock.value.header.metadata.height}-${transaction.index}`,
+                        timestamp: responseBlock.header.metadata.timestamp,
+                        sortNo: `${responseBlock.header.metadata.height}-${transaction.index}`,
                     };
                 });
                 if (loading3.value) loading3.value = false;
 
-                solutions.value = responseBlock.value.solutions.solutions.map((solution) => {
+                solutions.value = responseBlock.solutions.solutions.map((solution) => {
                     return {
                         address: solution.partial_solution.address,
                         nonce: solution.partial_solution.nonce,
@@ -127,21 +126,26 @@ export const getBlockAndTransactionsAndSolutions = (blockHeightOrHash, loading5,
 
 
 export const getValidators = (loading11, validators, members) => {
-    useFetch('/api/validators')
+    $fetch('/api/validators')
         .then(response => {
-            const responseValidators = response.data;
-            validators.value = responseValidators.value;
-            const membersData = responseValidators.value.members;
+            const responseValidators = response;
+            validators.value = responseValidators;
+            const membersData = responseValidators.members;
 
-            members.value = Object.entries(membersData).map(([address, [stake, bondingState]], index) => {
-                return {
-                    rank: index + 1,
+            const sortedMembers = Object.entries(membersData)
+                .map(([address, [stake, bondingState]]) => ({
                     address,
                     stake,
                     bondingState
-                };
+                }))
+                .sort((a, b) => b.stake - a.stake);
+
+            sortedMembers.forEach((member, index) => {
+                member.rank = index + 1;
             });
 
+            members.value = sortedMembers;
+            
             if (loading11.value) loading11.value = false;
             return true;
         })
@@ -156,10 +160,10 @@ export const getValidators = (loading11, validators, members) => {
 
 
 export const getPrograms = (loading9, programs) => {
-    useFetch('/api/programs')
+    $fetch('/api/programs')
         .then(response => {
-            const responsePrograms = response.data;
-            programs.value = responsePrograms.value;
+            const responsePrograms = response;
+            programs.value = responsePrograms;
             if (loading9.value) loading9.value = false;
             return true;
         })
@@ -178,15 +182,15 @@ export const getProgram = (programId, loading9, program) => {
         const id = programId.value;
         program.value = { id: id };
 
-        useFetch(`/api/program/${id}`)
+        $fetch(`/api/program/${id}`)
             .then((response) => {
-                const responseSourceCode = response.data
-                program.value.sourceCode = responseSourceCode.value;
-                return useFetch(`/api/find/transactionId/${id}`);
+                const responseSourceCode = response
+                program.value.sourceCode = responseSourceCode;
+                return $fetch(`/api/find/transactionId/${id}`);
             })
             .then((response) => {
-                const responseTransactionId = response.data
-                program.value.transactionId = responseTransactionId.value;
+                const responseTransactionId = response
+                program.value.transactionId = responseTransactionId;
                 if (loading9.value) loading9.value = false;
             })
             .catch(error => {
@@ -206,10 +210,10 @@ export const getLatestTransactions = (latestBlock, loading3, transactions) => {
 
 
         if (start && end) {
-            useFetch(`/api/blocks?start=${start}&end=${end}`)
+            $fetch(`/api/blocks?start=${start}&end=${end}`)
                 .then(response => {
-                    const responseBlocks = response.data;
-                    transactions.value = responseBlocks.value.flatMap((block) => {
+                    const responseBlocks = response;
+                    transactions.value = responseBlocks.flatMap((block) => {
                         return block.transactions.map((transaction) => {
                             return {
                                 transactionId: transaction.transaction.id,
@@ -239,14 +243,14 @@ export const getLatestTransactions = (latestBlock, loading3, transactions) => {
 export const getBlockAndTransactionAndTransitions = (transactionId, loading5, loading7, loading8, block, transaction, transitions) => {
     if (transactionId.value) {
         const id = transactionId.value;
-        useFetch(`/api/find/blockHash/${id}`)
+        $fetch(`/api/find/blockHash/${id}`)
             .then((response) => {
-                const responseHash = response.data;
-                return useFetch(`/api/block/${responseHash.value}`);
+                const responseHash = response;
+                return $fetch(`/api/block/${responseHash}`);
             })
             .then((response) => {
-                const responseBlock = response.data
-                block.value = responseBlock.value;
+                const responseBlock = response;
+                block.value = responseBlock;
 
                 if (loading5.value) loading5.value = false;
             })
@@ -255,13 +259,13 @@ export const getBlockAndTransactionAndTransitions = (transactionId, loading5, lo
                 return false;
             });
 
-        useFetch(`/api/transaction/${id}`)
+        $fetch(`/api/transaction/${id}`)
             .then((response) => {
-                const responseTransaction = response.data;
-                transaction.value = responseTransaction.value;
+                const responseTransaction = response;
+                transaction.value = responseTransaction;
                 if (loading7.value) loading7.value = false;
 
-                transitions.value = responseTransaction.value.execution.transitions.map((transition) => {
+                transitions.value = responseTransaction.execution.transitions.map((transition) => {
                     return {
                         transitionId: transition.id,
                         program: transition.program,
@@ -270,7 +274,7 @@ export const getBlockAndTransactionAndTransitions = (transactionId, loading5, lo
                         outputs: transition.outputs,
                         tpk: transition.tpk,
                         tcm: transition.tcm,
-                        sortNo: `${responseTransaction.value.id}-${transition.id}`,
+                        sortNo: `${responseTransaction.id}-${transition.id}`,
                     };
                 });
                 if (loading8.value) loading8.value = false;         
@@ -287,10 +291,10 @@ export const getBlockAndTransactionAndTransitions = (transactionId, loading5, lo
 export const getAccount = (address, loading10, account) => {
     if (address.value) {
         const addr = address.value;
-        useFetch(`/api/account/${addr}`)
+        $fetch(`/api/account/${addr}`)
             .then((response) => {
-                const responseAccount = response.data;
-                account.value = responseAccount.value;
+                const responseAccount = response;
+                account.value = responseAccount;
                 if (loading10.value) loading10.value = false;
             })
             .catch(error => {
@@ -306,10 +310,10 @@ export const getAccount = (address, loading10, account) => {
 export const getAccountTransitions = (address, loading8, transitions) => {
     if (address.value) {
         const addr = address.value;
-        useFetch(`/api/account/transitions/${addr}`)
+        $fetch(`/api/account/transitions/${addr}`)
             .then((response) => {
-                const responseTransitions = response.data;
-                transitions.value = responseTransitions.value;
+                const responseTransitions = response;
+                transitions.value = responseTransitions;
                 if (loading8.value) loading8.value = false;
             })
             .catch(error => {

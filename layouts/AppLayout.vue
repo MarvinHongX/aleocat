@@ -30,7 +30,7 @@ const containerClass = computed(() => {
         <app-topbar></app-topbar>
         <div class="layout-main-container">
             <div class="layout-main">
-                <router-view></router-view>
+                <NuxtPage />
             </div>
             <app-footer></app-footer>
         </div>

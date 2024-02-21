@@ -10,7 +10,13 @@ export default defineNuxtConfig({
     typescript: false,
     app: {
         head: {
-            title: 'ALEO CAT',
+            title: 'ALEO CAT | aleo explorer',
+            meta: [
+                { charset: 'utf-8' },
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+                { hid: 'description', name: 'description', content: 'Your Premier Block Explorer and Analytics Platform for Aleo' },
+                { name: "google-site-verification", content: "fRM5FTZ5bZt5MRpwplDneJwVFNFflKfq-jVZrpXB3kc" },
+              ],
             link: [
                 {
                     id: 'theme-css',
@@ -21,12 +27,23 @@ export default defineNuxtConfig({
             ]
         }
     },
-    modules: ['nuxt-primevue'],
+    modules: [
+        'nuxt-primevue',
+        '@nuxtjs/sitemap',
+    ],
     primevue: {
         options: { ripple: true },
         components: {
             exclude: ['Editor']
         }
+    },
+    site: {
+        url: 'https://aleocat.com',
+        gzip: true,
+    },
+    sitemap: {
+        // exclude all app sources
+        excludeAppSources: true,
     },
     script: [
         {

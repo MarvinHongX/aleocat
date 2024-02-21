@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { isLatestBlock, fetchDataAndSaveToLocalStorage, getLatestBlockFromLocalStorage } from '@/commons/commonService';
+import { isLatestBlock, getLatestBlockAndSaveToLocalStorage, getLatestBlockFromLocalStorage } from '@/commons/commonService';
 import { useToast } from "primevue/usetoast";
 
 const { layoutConfig } = useLayout();
@@ -39,7 +39,7 @@ const intervalAction = () => {
     intervalCount.value++;
     if (loading1 || (intervalCount.value > LOADING_THRESHOLD)){
         if (!isLatestBlock(latestBlock)) {
-            fetchDataAndSaveToLocalStorage(LOCAL_STORAGE_KEY)
+            getLatestBlockAndSaveToLocalStorage(LOCAL_STORAGE_KEY)
             getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
         }
     }
