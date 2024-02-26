@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getLatestBlockFromLocalStorage  } from '@/commons/commonService';
 
-const loading1 = ref(true);
-const loading2 = ref(true);
-const latestBlock = ref(null); 
-const blocks = ref(null);
-const blockParams = ref({
+const loading1 = ref<boolean>(true);
+const loading2 = ref<boolean>(true);
+const latestBlock = ref<Block | null>(null); 
+const blocks = ref<Block[]>([]);
+const blockParams = ref<BlockParams>({
     currentPage: 1,
     pageSize: 20,
     totalRecords: 1
@@ -15,9 +15,9 @@ const blockParams = ref({
 const labels = useLabels();
 const loadingState = useLoadingState();
 
-const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD } = useCommonConstant();
+const { LOCAL_STORAGE_KEY } = useCommonConstant();
 
-const onBlockPage = (event) => {
+const onBlockPage = (event: any) => {
     blockParams.value.currentPage = event.page + 1;
     fetchBlocksForPage(blockParams, loading2, blocks);
 };
@@ -25,7 +25,8 @@ const onBlockPage = (event) => {
 
 onMounted(() => {
     if (getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY)) {
-        blockParams.value.totalRecords = latestBlock.value.header.metadata.height;
+        blockParams.value.totalRecords = latestBlock.value?.header?.metadata?.height ?? 1;
+
         fetchBlocksForPage(blockParams, loading2, blocks);
     }
 });

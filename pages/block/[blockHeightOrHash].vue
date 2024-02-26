@@ -1,30 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getBlockAndTransactionsAndSolutions } from '@/commons/commonService';
 
-const loading3 = ref(true);
-const loading5 = ref(true);
-const loading6 = ref(true);
-const blockHeightOrHash = ref(null);
-const block = ref(null);
-const transactions = ref(null);
-const solutions = ref(null);
-const route = useRoute();
+const loading3 = ref<boolean>(true);
+const loading5 = ref<boolean>(true);
+const loading6 = ref<boolean>(true);
+const blockHeightOrHash = ref<string>('');
+const block = ref<Block | null>(null);
+const transactions = ref<Transaction[]>([]);
+const solutions = ref<Solution[]>([]);
 
+const route = useRoute();
 const labels = useLabels();
 const loadingState = useLoadingState();
 
 
 watch(() => route.params.blockHeightOrHash, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        blockHeightOrHash.value = newValue;
+        blockHeightOrHash.value = newValue.toString();
         getBlockAndTransactionsAndSolutions(blockHeightOrHash, loading5, loading3, loading6, block, transactions, solutions);
     }
 });
 
 onMounted(() => {
-    blockHeightOrHash.value = route.params.blockHeightOrHash;
+    blockHeightOrHash.value = route.params.blockHeightOrHash.toString();
     getBlockAndTransactionsAndSolutions(blockHeightOrHash, loading5, loading3, loading6, block, transactions, solutions);
 });
 
@@ -40,26 +40,26 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.height }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.metadata.height.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.height.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.blockHash }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
-                    >{{ block.block_hash }}</span>
+                    >{{ block?.block_hash }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.network }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
-                    ><Tag :severity="getBadgeNetwork(block.header.metadata.network)">{{ getNetwork(block.header.metadata.network) }}</Tag></span>
+                    ><Tag :severity="getBadgeNetwork(block?.header.metadata.network)">{{ getNetwork(block?.header.metadata.network) }}</Tag></span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.round }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
-                    >{{ block.header.metadata.round.toLocaleString() }}</span>
+                    >{{ block?.header.metadata.round.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.timestamp }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ formatTimestamp(block.header.metadata.timestamp) }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ formatTimestamp(block?.header.metadata.timestamp) }}</span>
                 </div>
             </div>
 
@@ -68,54 +68,55 @@ onMounted(() => {
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.previousBlockHash }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
                     >
-                    <NuxtLink :to="'/block/' + block.previous_hash">
-                        {{ block.previous_hash }}
+                    <NuxtLink :to="'/block/' + block?.previous_hash">
+                        {{ block?.previous_hash }}
                     </NuxtLink>
                     </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.previousStateRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.previous_state_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.previous_state_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transactionsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.transactions_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.transactions_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.finalizeRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.finalize_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.finalize_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.ratificationsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.ratifications_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.ratifications_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.solutionsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.solutions_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.solutions_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.subdagRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.subdag_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.subdag_root }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.cumulativeWeight }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.metadata.cumulative_weight.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.cumulative_weight.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.cumulativeProofTarget }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.metadata.cumulative_proof_target.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.cumulative_proof_target.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.coinbaseTarget }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.metadata.coinbase_target.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.coinbase_target.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.proofTarget }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.header.metadata.proof_target.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.proof_target.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.coinbaseReward }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block.ratifications.find(item => item.type === "puzzle_reward").amount.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.ratifications?.find(item => item.type === 'puzzle_reward')?.amount?.toLocaleString() }}</span>
+
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.totalFee }}</span>

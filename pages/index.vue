@@ -1,19 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getTransactionsOfLatestBlock, getLatestBlockFromLocalStorage } from '@/commons/commonService';
 
-const intervalId = ref(null);
-const loading1 = ref(true);
-const loading2 = ref(true);
-const loading3 = ref(true);
-const latestBlock = ref(null); 
-const transactions = ref(null);
-const blocks = ref(null);
-const blockParams = ref({
+const intervalId = ref<NodeJS.Timeout | null>(null);
+const loading1 = ref<boolean>(true);
+const loading2 = ref<boolean>(true);
+const loading3 = ref<boolean>(true);
+const latestBlock = ref<Block | null>(null); 
+const transactions = ref<Transaction[]>([]);
+const blocks = ref<Block[]>([]);
+const blockParams = ref<BlockParams>({
     currentPage: 1,
     pageSize: 10,
     totalRecords: 1
 });
+
 
 const labels = useLabels();
 const sentences = useSentences();
@@ -21,14 +22,14 @@ const loadingState = useLoadingState();
 
 const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD } = useCommonConstant();
 
-const onBlockPage = (event) => {
+const onBlockPage = (event: any) => {
     blockParams.value.currentPage = event.page + 1;
     fetchBlocksForPage(blockParams, loading2, blocks);
 };
 
 const intervalAction = () => {
     if (getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY)) {
-        blockParams.value.totalRecords = latestBlock.value.header.metadata.height;
+        blockParams.value.totalRecords = latestBlock.value?.header?.metadata?.height ?? 1;
         fetchBlocksForPage(blockParams, loading2, blocks);
         getTransactionsOfLatestBlock(latestBlock, loading3, transactions);
     }
@@ -41,7 +42,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    clearInterval(intervalId.value); 
+    clearInterval(intervalId.value ?? undefined); 
 });
 
 
@@ -55,7 +56,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState"> {{ labels.latestBlock }} </span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ latestBlock.header.metadata.height.toLocaleString() }}
+                            >{{ latestBlock?.header.metadata.height.toLocaleString() }}
                         </div>
                     </div>
                 </div>
@@ -67,7 +68,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState"> {{ labels.proofTarget }} </span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ latestBlock.header.metadata.proof_target.toLocaleString() }}
+                            >{{ latestBlock?.header.metadata.proof_target.toLocaleString() }}
                         </div>
                     </div>
                 </div>
@@ -79,7 +80,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.coinbaseTarget }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ latestBlock.header.metadata.coinbase_target.toLocaleString() }}
+                            >{{ latestBlock?.header.metadata.coinbase_target.toLocaleString() }}
                         </div>
                     </div>
                 </div>
@@ -91,7 +92,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.timestamp }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ formatTimestamp(latestBlock.header.metadata.timestamp) }}
+                            >{{ formatTimestamp(latestBlock?.header.metadata.network) }}
                         </div>
                     </div>
                 </div>
@@ -104,7 +105,7 @@ onBeforeUnmount(() => {
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.network }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
                             >
-                            <Tag :severity="getBadgeNetwork(latestBlock.header.metadata.network)">{{ getNetwork(latestBlock.header.metadata.network) }}</Tag>
+                            <Tag :severity="getBadgeNetwork(latestBlock?.header.metadata.network)">{{ getNetwork(latestBlock?.header.metadata.network) }}</Tag>
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.round }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ latestBlock.header.metadata.round.toLocaleString() }}
+                            >{{ latestBlock?.header.metadata.round.toLocaleString() }}
                         </div>
                     </div>
                 </div>

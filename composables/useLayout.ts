@@ -22,24 +22,24 @@ const layoutState = reactive({
 });
 
 export const useLayout = () => {
-    const changeThemeSettings = (theme, darkTheme) => {
+    const changeThemeSettings = (theme: string, darkTheme: boolean): void => {
         layoutConfig.darkTheme = darkTheme;
         layoutConfig.theme = theme;
     };
 
-    const changeLanguageSettings = (language) => {
+    const changeLanguageSettings = (language: Language): void => {
         layoutConfig.language = language;
     };
 
-    const setScale = (scale) => {
+    const setScale = (scale: number): void => {
         layoutConfig.scale = scale;
     };
 
-    const setActiveMenuItem = (item) => {
+    const setActiveMenuItem = (item: any): void => {
         layoutConfig.activeMenuItem = item.value || item;
     };
 
-    const onMenuToggle = () => {
+    const onMenuToggle = (): void => {
         if (layoutConfig.menuMode === 'overlay') {
             layoutState.overlayMenuActive = !layoutState.overlayMenuActive;
         }

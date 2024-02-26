@@ -1,6 +1,6 @@
-export const getMenuItems = (selectedLanguage) => {
+export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
     const language = selectedLanguage.value.code;
-    const menuLabels = {
+    const menuLabels: Record<string, MenuLabel> = {
         'KOR': {
             validators: '검증자',
             programs: '프로그램',
@@ -15,16 +15,18 @@ export const getMenuItems = (selectedLanguage) => {
         },
     };
 
-    return Object.keys(menuLabels[language]).map(key => ({
+    const menuItems: MenuItem[] = Object.keys(menuLabels[language]).map(key => ({
         label: menuLabels[language][key],
         route: key === 'home' ? '/' : `/${key}`,
     }));
+    return menuItems;
 };
 
 
-export const getSentences = (selectedLanguage) => {
-    const language = selectedLanguage.value.code;
-    const sentences = {
+
+export const getSentences = (selectedLanguage: Ref<Language>): Record<string, string> => {
+    const language: string = selectedLanguage.value.code;
+    const sentences: Sentences = {
         noResultsFound: {
             ENG: 'No results found.',
             KOR: '결과를 찾을 수 없습니다.'
@@ -54,24 +56,25 @@ export const getSentences = (selectedLanguage) => {
             KOR: '더 스카이존'
         },
     };
-    return {
-        noResultsFound: sentences.noResultsFound[language],
-        searchBy: sentences.searchBy[language],
-        searchResults: sentences.searchResults[language],
-        keywordSearch: sentences.keywordSearch[language],
-        footerMsg1: sentences.footerMsg1[language],
-        skyzoneMsg1: sentences.skyzoneMsg1[language],
-        skyzoneMsg2: sentences.skyzoneMsg2[language],
-    };
+
+    const result: Record<string, string> = {};
+
+    Object.keys(sentences).forEach((key: string) => {
+        const sentence = sentences[key];
+        if (sentence.hasOwnProperty(language)) {
+            result[key] = sentence[language as keyof typeof sentence];
+        }
+    });
+    return result;
 };
 
 
 
 
 
-export const getLabels = (selectedLanguage) => {
-    const language = selectedLanguage.value.code;
-    const labels = {
+export const getLabels = (selectedLanguage: Ref<Language>): Record<string, string> => {
+    const language: string = selectedLanguage.value.code;
+    const labels: Labels = {
         acceptedPuzzleSolutions: {
             ENG: 'Accepted Puzzle Solutions',
             KOR: '수용된 퍼즐 솔루션들'
@@ -393,86 +396,15 @@ export const getLabels = (selectedLanguage) => {
             KOR: '보기'
         }
     };
-    return {
-        acceptedPuzzleSolutions: labels.acceptedPuzzleSolutions[language],
-        acceptedSolutions: labels.acceptedSolutions[language],
-        account: labels.account[language],
-        address: labels.address[language],
-        addressStats: labels.addressStats[language],
-        aleoPrice: labels.aleoPrice[language],
-        block: labels.block[language],
-        blockHash: labels.blockHash[language],
-        blockHeight: labels.blockHeight[language],
-        bondingState: labels.bondingState[language],
-        clear: labels.clear[language],
-        coinbaseReward: labels.coinbaseReward[language],
-        coinbaseTarget: labels.coinbaseTarget[language],
-        commitment: labels.commitment[language],
-        creditsStaked: labels.creditsStaked[language],
-        cumulativeProofTarget: labels.cumulativeProofTarget[language],
-        cumulativeWeight: labels.cumulativeWeight[language],
-        deployedPrograms: labels.deployedPrograms[language],
-        email: labels.email[language],
-        epoch: labels.epoch[language],
-        executeTransitions: labels.executeTransitions[language],
-        fee: labels.fee[language],
-        finalizeRoot: labels.finalizeRoot[language],
-        functionName: labels.functionName[language],
-        getStarted: labels.getStarted[language],
-        height: labels.height[language],
-        index: labels.index[language],
-        inBlock: labels.inBlock[language],
-        inputs: labels.inputs[language],
-        latestBlock: labels.latestBlock[language],
-        latestBlocks: labels.latestBlocks[language],
-        latestTransactions: labels.latestTransactions[language],
-        latestTransitions: labels.latestTransitions[language],
-        lifetimePuzzleReward: labels.lifetimePuzzleReward[language],
-        lifetimeStakeReward: labels.lifetimeStakeReward[language],
-        loading: labels.loading[language],
-        network: labels.network[language],
-        noDataFound: labels.noDataFound[language],
-        nonce: labels.nonce[language],
-        numberOfSolutions: labels.numberOfSolutions[language],
-        numberOfTransactions: labels.numberOfTransactions[language],
-        outputs: labels.outputs[language],
-        previousBlockHash: labels.previousBlockHash[language],
-        previousStateRoot: labels.previousStateRoot[language],
-        program: labels.program[language],
-        programId: labels.programId[language],
-        programs: labels.programs[language],
-        programsDeployed: labels.programsDeployed[language],
-        programStructure: labels.programStructure[language],
-        proofTarget: labels.proofTarget[language],
-        publicCredits: labels.publicCredits[language],
-        publicCreditsReceived: labels.publicCreditsReceived[language],
-        publicCreditsSent: labels.publicCreditsSent[language],
-        puzzleSolutions: labels.puzzleSolutions[language],
-        rank: labels.rank[language],
-        ratificationsRoot: labels.ratificationsRoot[language],
-        recentCalls: labels.recentCalls[language],
-        recentTransitions: labels.recentTransitions[language],
-        reward: labels.reward[language],
-        round: labels.round[language],
-        solutionsRoot: labels.solutionsRoot[language],
-        sourceCode: labels.sourceCode[language],
-        stake: labels.stake[language],
-        startingRound: labels.startingRound[language],
-        status: labels.status[language],
-        subdagRoot: labels.subdagRoot[language],
-        timestamp: labels.timestamp[language],
-        totalStake: labels.totalStake[language],
-        totalFee: labels.totalFee[language],
-        totalFeeSpent: labels.totalFeeSpent[language],
-        transitionId: labels.transitionId[language],
-        transitions: labels.transitions[language],
-        transferAmount: labels.transferAmount[language],
-        transaction: labels.transaction[language],
-        transactions: labels.transactions[language],
-        transactionId: labels.transactionId[language],
-        transactionsRoot: labels.transactionsRoot[language],
-        type: labels.type[language],
-        validators: labels.validators[language],
-        view: labels.view[language],
-    };
+
+    const result: Record<string, string> = {};
+
+    Object.keys(labels).forEach((key: string) => {
+        const label = labels[key];
+        if (label.hasOwnProperty(language)) {
+            result[key] = label[language as keyof typeof label];
+        }
+    });
+
+    return result;
 };

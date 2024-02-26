@@ -7,7 +7,9 @@ export default defineNuxtConfig({
             //apiBase: process.env.API_URL_TEST,
         },
     },
-    typescript: false,
+    typescript: {
+        typeCheck: true
+    },
     app: {
         head: {
             title: 'ALEO CAT | aleo explorer',
@@ -17,6 +19,18 @@ export default defineNuxtConfig({
                 { hid: 'description', name: 'description', content: 'Your Premier Block Explorer and Analytics Platform for Aleo' },
                 { name: "google-site-verification", content: "fRM5FTZ5bZt5MRpwplDneJwVFNFflKfq-jVZrpXB3kc" },
               ],
+            script: [
+                { src: 'https://www.googletagmanager.com/gtag/js?id=UA-93461466-1' },
+                {
+                    id: 'ga-analytics',
+                    children: `
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', 'UA-93461466-1');
+                    `
+                }
+            ],
             link: [
                 {
                     id: 'theme-css',
@@ -37,29 +51,9 @@ export default defineNuxtConfig({
             exclude: ['Editor']
         }
     },
-    site: {
-        url: 'https://aleocat.com',
-        gzip: true,
-    },
     sitemap: {
         // exclude all app sources
         excludeAppSources: true,
     },
-    script: [
-        {
-            strategy: 'lazyOnload',
-            src: 'https://www.googletagmanager.com/gtag/js?id=UA-93461466-1'
-        },
-        {
-            id: 'ga-analytics',
-            strategy: 'lazyOnload',
-            children: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'UA-93461466-1');
-            `
-        }
-    ],
     css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/primevue.min.css', '@/assets/styles.scss'],
 });

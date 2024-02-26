@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { usePrimeVue } from 'primevue/config';
 import AppTopbar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
@@ -6,12 +6,10 @@ import AppFooter from './AppFooter.vue';
 const $primevue = usePrimeVue();
 const { layoutConfig, layoutState } = useLayout();
 
-
-
 const containerClass = computed(() => {
     return {
-        'layout-theme-light': layoutConfig.darkTheme.value === 'light',
-        'layout-theme-dark': layoutConfig.darkTheme.value === 'dark',
+        'layout-theme-light': layoutConfig.darkTheme.value === true,
+        'layout-theme-dark': layoutConfig.darkTheme.value === true,
         'layout-overlay': layoutConfig.menuMode.value === 'overlay',
         'layout-static': layoutConfig.menuMode.value === 'static',
         'layout-static-inactive': layoutState.staticMenuDesktopInactive.value && layoutConfig.menuMode.value === 'static',
@@ -21,7 +19,6 @@ const containerClass = computed(() => {
         'p-ripple-disabled': $primevue.config.ripple === true
     };
 });
-
 
 </script>
 

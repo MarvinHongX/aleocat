@@ -1,27 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { getValidators } from '@/commons/commonService';
 
-const filters = ref(null);
-const loading11 = ref(true);
-const validators = ref(null);
-const members = ref(null);
+const loading11 = ref<boolean>(true);
+const latestCommittee = ref<Committee | null>(null);
+const validators = ref<Validator[]>([]);
 const labels = useLabels();
 const loadingState = useLoadingState();
 
-const initFilters = () => {
-    filters.value = {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        "id":  { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-    };
-};
-
-
 onMounted(() => {
-    getValidators(loading11, validators, members);
+    getValidators(loading11, latestCommittee, validators);
 });
-initFilters();
 
 
 
@@ -32,20 +21,20 @@ initFilters();
         <div class="col-12">
             <div class="card">
                 <div class="flex align-items-center justify-content-between mb-4">
-                    <h5 v-if="!loadingState"> {{ labels.validators }} </h5>
+                    <h5 v-if="!loadingState"> {{ labels.latestCommittee }} </h5>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.totalStake }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading11">{{ validators.total_stake.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading11">{{ latestCommittee?.total_stake.toLocaleString() }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.startingRound }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading11">{{ validators.starting_round.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading11">{{ latestCommittee?.starting_round.toLocaleString() }}</span>
                 </div>
             </div>
             <div class="card">
                 <DataTable
-                    :value="members"
+                    :value="validators"
                     paginator
                     showGridlines
                     :rows="50"

@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { getPrograms } from '@/commons/commonService';
 
-const filters = ref(null);
-const loading4 = ref(true);
-const programs = ref(null);
+const filters = ref<any>(null);
+const loading4 = ref<boolean>(true);
+const programs = ref<Program[]>([]);
 
 const labels = useLabels();
 const sentences = useSentences();

@@ -1,12 +1,12 @@
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: any) => {
     const config  = useRuntimeConfig();
-    const apiBase = config.public.apiBase;
-
-    const url = `${apiBase}/program/credits.aleo/mapping/account/${event.context.params.addr}`;
-    const response = await $fetch(url);
+    const apiBase: string = config.public.apiBase;
+    const addr: string = event.context.params.addr;
+    const url: string = `${apiBase}/program/credits.aleo/mapping/account/${addr}`;
+    const response: any = await $fetch(url);
 
     return {
-        address: event.context.params.addr,
+        address: addr,
         publicCredits: response,
         //creditsStaked: '0 Aleo credits',
         //publicCreditsReceived: '0 Aleo credits',

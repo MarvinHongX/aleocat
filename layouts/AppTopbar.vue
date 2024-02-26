@@ -1,22 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import { isLatestBlock, getLatestBlockAndSaveToLocalStorage, getLatestBlockFromLocalStorage } from '@/commons/commonService';
+import { getAleoPrice, getLatestBlockAndSaveToLocalStorage, getLatestBlockFromLocalStorage } from '@/commons/commonService';
 import { useToast } from "primevue/usetoast";
 
 const { layoutConfig } = useLayout();
 const toast = useToast();
 
-const intervalCount = ref(0);
-const intervalId = ref(null);
-const loading1 = ref(true);
-const latestBlock = ref(null);
-const elapsedTime = ref(null);
-const aleoPrice = ref(1049.76);
-const aleoPriceChangePercentage = ref(32.4);
-const searchValue = ref('');
+const intervalCount = ref<number>(0);
+const intervalId = ref<string | number | NodeJS.Timeout | undefined>(undefined);
+const loading1 = ref<boolean>(true);
+const loading12 = ref<boolean>(true);
+const latestBlock = ref<Block | null>(null);
+const elapsedTime = ref<string>('');
+const aleoPrice = ref<number>(0);
+const aleoPriceChangePercentage = ref<number>(0);
+const searchValue = ref<string>('');
+
 const selectedLanguage = useSelectedLanguage();
 const languages = useLanguages();
-
 const menuItems = useMenuItems();
 const labels = useLabels();
 const sentences = useSentences();
@@ -37,11 +38,13 @@ watch(selectedLanguage, () => {
 
 const intervalAction = () => {
     intervalCount.value++;
-    if (loading1 || (intervalCount.value > LOADING_THRESHOLD)){
-        if (!isLatestBlock(latestBlock)) {
-            getLatestBlockAndSaveToLocalStorage(LOCAL_STORAGE_KEY)
-            getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
-        }
+    if (loading1.value || (intervalCount.value > LOADING_THRESHOLD)){
+        getLatestBlockAndSaveToLocalStorage(LOCAL_STORAGE_KEY);
+        getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
+        intervalCount.value = 0;
+    }
+    if (loading12.value){
+        getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
     }
     updateElapsedTime(latestBlock, elapsedTime);
 }
@@ -74,17 +77,17 @@ onBeforeUnmount(() => {
                 <div class="layout-topbar-top-info">
                     <div class="flex flex-row">
                         <span class="text-900" v-if="!loadingState">{{ labels.aleoPrice }}:&nbsp;&nbsp;</span>
-                        <span class="text-green-500 font-medium" v-if="!loading1"
+                        <span class="text-green-500 font-medium" v-if="!loading12"
                             >${{ aleoPrice.toLocaleString() }}
                         </span>
-                        <span :class="{ 'text-blue-500': aleoPriceChangePercentage > 0, 'text-red-500': aleoPriceChangePercentage < 0 }" v-if="!loading1"
+                        <span :class="{ 'text-blue-500': aleoPriceChangePercentage > 0, 'text-red-500': aleoPriceChangePercentage < 0 }" v-if="!loading12"
                             >&nbsp;{{ aleoPriceChangePercentage > 0 ? '+' : '' }}{{ aleoPriceChangePercentage.toLocaleString() }}%
                         </span>                        
                     </div>
                     <div class="flex flex-row">
                         <span class="text-900" v-if="!loadingState">{{ labels.blockHeight }}:&nbsp;&nbsp;</span>
                         <span class="text-blue-500 font-medium"  v-if="!loading1"
-                            >{{ latestBlock.header.metadata.height.toLocaleString() }}
+                            >{{ latestBlock?.header.metadata.height.toLocaleString() }}
                         </span>
                         <span class="text-gray-500 font-medium" v-if="!loading1"
                             >&nbsp;&nbsp;&nbsp;{{ elapsedTime }}

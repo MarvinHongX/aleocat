@@ -1,28 +1,31 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getProgram } from '@/commons/commonService';
 
-const loading9 = ref(true);
-const programId = ref(null);
-const program = ref(null);
-const route = useRoute();
+const loading9 = ref<boolean>(true);
+const programId = ref<string>('');
+const program = ref<Program>({     
+    id: '',
+    sourceCode: '',
+    transactionId: '',  
+});
 
+const route = useRoute();
 const labels = useLabels();
 const loadingState = useLoadingState();
 
 watch(() => route.params.programId, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        programId.value = newValue;
+        programId.value = newValue.toString();
         getProgram(programId, loading9, program);
     }
 });
 
 onMounted(() => {
-    programId.value = route.params.programId;
+    programId.value = route.params.programId.toString();
     getProgram(programId, loading9, program);
 });
-
 
 </script>
 
@@ -35,13 +38,13 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.programId }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading9">{{ program.id }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading9">{{ program?.id }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transaction }}</span>
                     <span class="text-900 line-height-3" v-if="!loading9"
                     >
-                        <NuxtLink v-if="program.transactionId" :to="'/transaction/' + program.transactionId" rel="noopener">
+                        <NuxtLink v-if="program?.transactionId" :to="'/transaction/' + program.transactionId" rel="noopener">
                             {{ program.transactionId }}
                         </NuxtLink>
                         <span v-else>-</span>
@@ -52,7 +55,7 @@ onMounted(() => {
                 <TabView>
                     <TabPanel v-if="!loadingState" :header="labels.sourceCode">
                         <div class="flex flex-row">
-                            <pre class="text-900 line-height-3" v-if="!loading9"> {{ program.sourceCode }}</pre>
+                            <pre class="text-900 line-height-3" v-if="!loading9"> {{ program?.sourceCode }}</pre>
                         </div>
                     </TabPanel>
                     <TabPanel v-if="!loadingState" :header="labels.programStructure">

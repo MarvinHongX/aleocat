@@ -1,28 +1,28 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getAccount, getAccountTransitions } from '@/commons/commonService';
 
-const loading8 = ref(true);
-const loading10 = ref(true);
-const address = ref(null);
-const account = ref(null);
-const transitions = ref(null);
-const route = useRoute();
+const loading8 = ref<boolean>(true);
+const loading10 = ref<boolean>(true);
+const address = ref<string>('');
+const account = ref<Account | null>(null);
+const transitions = ref<Transition[]>([]);
 
+const route = useRoute();
 const labels = useLabels();
 const loadingState = useLoadingState();
 
 watch(() => route.params.address, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        address.value = newValue;
+        address.value = newValue.toString();
         getAccount(address, loading10, account);
         getAccountTransitions(address, loading8, transitions);
     }
 });
 
 onMounted(() => {
-    address.value = route.params.address;
+    address.value = route.params.address.toString();
     getAccount(address, loading10, account);
     getAccountTransitions(address, loading8, transitions);
 });
@@ -39,11 +39,11 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.address }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading10">{{ account.address }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading10">{{ account?.address }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.publicCredits }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading10">{{ toAleoScale(account.publicCredits) }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading10">{{ toAleoScale(account?.publicCredits) }}</span>
                 </div>
             </div>
             <div class="card">

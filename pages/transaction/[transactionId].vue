@@ -1,29 +1,29 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getBlockAndTransactionAndTransitions } from '@/commons/commonService';
 
-const loading5 = ref(true);
-const loading7 = ref(true);
-const loading8 = ref(true);
-const transactionId = ref(null);
-const block = ref(null);
-const transaction = ref(null);
-const transitions = ref(null);
-const route = useRoute();
+const loading5 = ref<boolean>(true);
+const loading7 = ref<boolean>(true);
+const loading8 = ref<boolean>(true);
+const transactionId = ref<string>('');
+const block = ref<Block | null>(null);
+const transaction = ref<Transaction | null>(null);
+const transitions = ref<Transition[]>([]);
 
+const route = useRoute();
 const labels = useLabels();
 const loadingState = useLoadingState();
 
 watch(() => route.params.transactionId, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-        transactionId.value = newValue;
+        transactionId.value = newValue.toString();
         getBlockAndTransactionAndTransitions(transactionId, loading5, loading7, loading8, block, transaction, transitions);
     }
 });
 
 onMounted(() => {
-    transactionId.value = route.params.transactionId;
+    transactionId.value = route.params.transactionId.toString();
     getBlockAndTransactionAndTransitions(transactionId, loading5, loading7, loading8, block, transaction, transitions);
 });
 
@@ -39,25 +39,25 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transactionId }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading7">{{ transaction.id }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading7">{{ transaction?.transactionId }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.fee }}</span>
                     <span class="text-900 line-height-3" v-if="!loading7"
-                    >{{ toAleoScale(sumInputsFee(transaction.fee.transition.inputs)) }}</span>
+                    >{{ toAleoScale(transaction?.fee) }}</span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.inBlock }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
                     >
-                        <NuxtLink :to="'/block/' + block.header.metadata.height" rel="noopener">
-                            {{ block.header.metadata.height.toLocaleString() }}
+                        <NuxtLink :to="'/block/' + transaction?.blockHeight" rel="noopener">
+                            {{ transaction?.blockHeight.toLocaleString() }}
                         </NuxtLink>
                     </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.timestamp }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ formatTimestamp(block.header.metadata.timestamp) }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">{{ formatTimestamp(transaction?.timestamp) }}</span>
                 </div>
             </div>
 

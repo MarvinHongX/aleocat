@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { getLatestTransactions, getLatestBlockFromLocalStorage } from '@/commons/commonService';
 
-const filters = ref(null);
-const loading1 = ref(true);
-const loading3 = ref(true);
-const latestBlock = ref(null); 
-const transactions = ref(null);
+const filters = ref<any>(null);
+const loading1 = ref<boolean>(true);
+const loading3 = ref<boolean>(true);
+const latestBlock = ref<Block | null>(null); 
+const transactions = ref<Transaction[]>([]);
 
 const labels = useLabels();
 const sentences = useSentences();
