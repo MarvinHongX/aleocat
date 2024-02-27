@@ -52,8 +52,11 @@ export default defineNuxtConfig({
         }
     },
     sitemap: {
-        // exclude all app sources
-        excludeAppSources: true,
+        sitemaps: {
+            pages: {
+                includeAppSources: true,
+              },        
+        }
     },
     css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/primevue.min.css', '@/assets/styles.scss'],
 });
