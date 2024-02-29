@@ -4,6 +4,7 @@ export default defineNuxtConfig({
         public: {
             apiBase: process.env.API_URL,
             apiBase2: process.env.API_URL2,
+            apiBase3: process.env.API_URL3,
             //apiBase: process.env.API_URL_TEST,
         },
     },

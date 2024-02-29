@@ -48,6 +48,79 @@ export const getLatestBlockFromLocalStorage = (
 };
 
 
+export const getLatestBlocksAndTransactions = (
+    tableParams: Ref<TableParams>, 
+    loading2: Ref<boolean>, 
+    loading3: Ref<boolean>, 
+    blocks: Ref<Block[]>,
+    transactions: Ref<Transaction[]>
+): void => {
+    const { currentPage, pageSize, totalRecords } = tableParams.value;
+    const start: number = Math.max(totalRecords - (currentPage * pageSize) + 1, 1);
+    const end: number = totalRecords - ((currentPage - 1) * pageSize) + 1;
+
+    if (start && end) {
+        $fetch(`/api/blocks?start=${start}&end=${end}`)
+            .then((response: any[]) => {
+                response.sort((a: any, b: any) => b.header.metadata.height - a.header.metadata.height);
+                blocks.value = response;
+                if (loading2.value) loading2.value = false;
+
+                if (blocks && blocks.value && blocks.value.length > 0) {
+                    let transactionCount = 0;    
+                    transactions.value = blocks.value.flatMap((block: any) => {
+                        return block.transactions.map((transaction: any) => {
+                            if (transactionCount >= (pageSize ?? 10)) return {};
+                            transactionCount++;
+                            return {
+                                index: transaction.index,
+                                transactionId: transaction.transaction.id,
+                                fee: sumInputsFee(transaction.transaction.fee.transition.inputs),
+                                blockHeight: block.header.metadata.height,
+                                status: transaction.status,
+                                type: transaction.type,
+                                timestamp: block.header.metadata.timestamp,
+                                sortNo: `${block.header.metadata.height}-${transaction.index}`,
+                            };
+                        })
+                    }).slice(0, pageSize ?? 10);   
+                    if (loading3.value) loading3.value = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching Latest blocks and transactions:', error);
+            });
+    }
+};
+
+export const getTransactionsOfBlocks = (
+    blocks: Ref<Block[]>, 
+    loading3: Ref<boolean>, 
+    transactions: Ref<Transaction[]>
+): void => {
+    if (blocks && blocks.value && blocks.value.length > 0) {
+        blocks.value.forEach(block => {
+            if (block.header && block.header.metadata && block.header.metadata.height) {
+                transactions.value = block.transactions.map((transaction: any) => {
+                    return {
+                        index: transaction.index,
+                        transactionId: transaction.transaction.id,
+                        fee: sumInputsFee(transaction.transaction.fee.transition.inputs),
+                        blockHeight: block.header.metadata.height,
+                        status: transaction.status,
+                        type: transaction.type,
+                        timestamp: block.header.metadata.timestamp,
+                        sortNo: `${block.header.metadata.height}-${transaction.index}`,
+                    };
+                });
+            }
+        });
+
+        if (loading3.value) loading3.value = false;
+    }
+};
+
+
 export const getTransactionsOfLatestBlock = (
     latestBlock: Ref<Block | null>, 
     loading3: Ref<boolean>, 
@@ -74,12 +147,10 @@ export const getTransactionsOfLatestBlock = (
 };
 
 
-export const getBlocks = (
-    start: number, 
-    end: number, 
-    loading2: Ref<boolean>, 
-    blocks: Ref<Block[]>
-): Promise<boolean> => {
+export const fetchBlocksForPage = (tableParams: Ref<TableParams>, loading2: Ref<boolean>, blocks: Ref<Block[]>): void => {
+    const { currentPage, pageSize, totalRecords } = tableParams.value;
+    const start: number = Math.max(totalRecords - (currentPage * pageSize) + 1, 1);
+    const end: number = totalRecords - ((currentPage - 1) * pageSize) + 1;
     if (start && end) {
         $fetch(`/api/blocks?start=${start}&end=${end}`)
             .then((response: any) => {
@@ -93,7 +164,6 @@ export const getBlocks = (
                 return false;
             });
     }
-    return Promise.resolve(false);
 };
 
 
@@ -182,6 +252,124 @@ export const getValidators = (
 };
 
 
+export const fetchProversForPage = (
+    tableParams: Ref<TableParams>,
+    loading14: Ref<boolean>, 
+    provers: Ref<Prover[]>
+): void => {
+    const { currentPage, pageSize } = tableParams.value;
+    $fetch(`/api/provers?page=${currentPage}&pageSize=${pageSize}`)
+        .then((response: any) => {
+            const responseLeaderboard: any = response.leaderboard;
+            tableParams.value.totalRecords = response.count;
+            const sortedProvers: Prover[] = responseLeaderboard.map((proversData: any) => ({
+                address: proversData.address,
+                power: proversData.power,
+                score: proversData.score,
+                lastBlock: proversData.last_block,
+            }))
+            .sort((a: any, b: any) => b.score - a.score);
+
+            sortedProvers.forEach((prover: any, index: any) => {
+                prover.rank = index + 1 + (pageSize * currentPage);
+            });
+
+            $fetch('/api/info/reward')
+            .then((response: any) => {
+                sortedProvers.forEach((prover: any) => {
+                    prover.totalPower = response.total;
+                });
+                provers.value = sortedProvers;
+            });
+            if (loading14.value) loading14.value = false;
+        })
+        .catch(error => {
+            console.error('Error fetching provers:', error);
+        });
+};
+
+
+export const getTop10Growth = (
+    loading15: Ref<boolean>, 
+    top10Growth: Ref<LineChart>
+): void => {
+    const COLORS = [
+        'rgba(255, 99, 132, 0.2)', // 빨
+        'rgba(255, 159, 64, 0.2)', // 주
+        'rgba(255, 205, 86, 0.2)', // 노
+        'rgba(75, 192, 192, 0.2)', // 초
+        'rgba(54, 162, 235, 0.2)', // 파
+        'rgba(255, 99, 132, 0.2)', // 남
+        'rgba(153, 102, 255, 0.2)', // 보
+        'rgba(153, 102, 255, 0.3)', // 보
+        'rgba(153, 102, 255, 0.4)', // 보
+    ];
+    $fetch('/api/info/scores')
+        .then((response: any) => {
+            const responseData = response.data;
+
+            const labels: string[] = responseData[Object.keys(responseData)[0]].map((item: any) => formatTimestampYYYYMMDD(item.timestamp));
+
+            const lineChartData: LineChart = {
+                labels: labels,
+                datasets: Object.keys(responseData).map((key: string, index: number) => {
+                    const dataset = {
+                        label: key,
+                        data: responseData[key].map((item: any) => item.value),
+                        fill: false,
+                        backgroundColor: '',
+                        borderColor: '',
+                        tension: 0.4
+                    };
+
+                    dataset.backgroundColor = COLORS[index];
+                    dataset.borderColor = COLORS[index];
+
+                    return dataset;
+                })
+            };
+            top10Growth.value = lineChartData;
+            if (loading15.value) loading15.value = false;
+        })
+        .catch(error => {
+            console.error('Error fetching top 10 growth:', error);
+        });
+};
+
+
+export const getDailyPower = (
+    loading16: Ref<boolean>, 
+    dailyPower: Ref<LineChart>
+): void => {
+    $fetch('/api/info/reward')
+        .then((response: any) => {
+            const responseData = response.power || [];
+            const labels: string[] = responseData.map((item: any) => item.date.toString());
+            const rewards: number[] = responseData.map((item: any) => parseFloat(item.reward));
+
+            const lineChartData: LineChart = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Total Power',
+                        data: rewards,
+                        fill: false,
+                        backgroundColor: '#2f4860',
+                        borderColor: '#2f4860',
+                        tension: 0.4
+                    }
+                ]
+            };
+            dailyPower.value = lineChartData;
+            if (loading16.value) loading16.value = false;
+        })
+        .catch(error => {
+            console.error('Error fetching daily power:', error);
+        });
+};
+
+
+
 export const getPrograms = (
     loading9: Ref<boolean>, 
     programs: Ref<Program[]>
@@ -256,6 +444,7 @@ export const getLatestTransactions = (
                                 fee: sumInputsFee(transaction.transaction.fee.transition.inputs),
                                 blockHeight: block.header.metadata.height,
                                 status: transaction.status,
+                                type: transaction.type,
                                 timestamp: block.header.metadata.timestamp,
                                 sortNo: `${block.header.metadata.height}-${transaction.index}`,
                             };
@@ -375,4 +564,21 @@ export const getAccountTransitions = (
                 return false;
             });
     }
+};
+
+
+export const getMinersInfo = (
+    minersInfo: Ref<MinersInfo | null>
+): void => {
+    $fetch(`/api/info/miners/`)
+        .then((response: any) => {
+            minersInfo.value = {
+                total: response.total,
+                new: response.total,
+            };
+        })
+        .catch(error => {
+            console.error('Error fetching miners info:', error);
+            return false;
+        });
 };

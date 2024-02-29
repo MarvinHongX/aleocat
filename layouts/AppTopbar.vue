@@ -40,13 +40,14 @@ const intervalAction = () => {
     intervalCount.value++;
     if (loading1.value || (intervalCount.value > LOADING_THRESHOLD)){
         getLatestBlockAndSaveToLocalStorage(LOCAL_STORAGE_KEY);
-        getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
+        
         intervalCount.value = 0;
     }
+    getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
+    updateElapsedTime(latestBlock, elapsedTime);
     if (loading12.value){
         getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
     }
-    updateElapsedTime(latestBlock, elapsedTime);
 }
 
 onMounted(() => {

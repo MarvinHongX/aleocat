@@ -11,6 +11,8 @@ const program = ref<Program>({
     transactionId: '',  
 });
 
+const block1 = ref<string>('');
+
 const route = useRoute();
 const labels = useLabels();
 const loadingState = useLoadingState();
@@ -53,11 +55,6 @@ onMounted(() => {
             </div>
             <div class="card">
                 <TabView>
-                    <TabPanel v-if="!loadingState" :header="labels.sourceCode">
-                        <div class="flex flex-row">
-                            <pre class="text-900 line-height-3" v-if="!loading9"> {{ program?.sourceCode }}</pre>
-                        </div>
-                    </TabPanel>
                     <TabPanel v-if="!loadingState" :header="labels.programStructure">
                         <p class="line-height-3 m-0">
                                             
@@ -75,7 +72,8 @@ onMounted(() => {
                     </TabPanel>
                 </TabView>
             </div>
-
+            <BlockViewer :header="labels.sourceCode" previewOff="true" :code="program?.sourceCode">
+            </BlockViewer>
         </div>
     </div>
 </template>

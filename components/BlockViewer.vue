@@ -7,6 +7,7 @@ export default {
             type: String,
             default: null
         },
+        previewOff: null,
         code: null,
         recent: {
             type: Boolean,
@@ -18,8 +19,8 @@ export default {
     data() {
         return {
             BlockView: {
-                PREVIEW: 0,
-                CODE: 1
+                PREVIEW: 1,
+                CODE: 0
             },
             blockView: 0
         };
@@ -46,7 +47,7 @@ export default {
                 <span v-if="recent" class="badge-new">New</span>
             </span>
             <div class="block-actions">
-                <a tabindex="0" :class="{ 'block-action-active': blockView === BlockView.PREVIEW }" @click="activateView($event, BlockView.PREVIEW)"><span>Preview</span></a>
+                <a v-if="!previewOff" tabindex="0" :class="{ 'block-action-active': blockView === BlockView.PREVIEW }" @click="activateView($event, BlockView.PREVIEW)"><span>Preview</span></a>
                 <a :tabindex="'0'" :class="{ 'block-action-active': blockView === BlockView.CODE }" @click="activateView($event, BlockView.CODE)">
                     <span>Code</span>
                 </a>

@@ -1,4 +1,3 @@
-import { getBlocks } from '@/commons/commonService';
 import { getMenuItems, getLabels, getSentences } from '@/commons/commonLanguageService';
 
 const { changeThemeSettings, changeLanguageSettings, layoutConfig } = useLayout();
@@ -102,6 +101,20 @@ export const toAleoScale = (value: string | number | undefined): string => {
     return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
 };
 
+export const toProverScoreScale = (value: number): string => {
+    const scaledResult: string =  (value / 1000000.0)?.toFixed(6)
+    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
+};
+
+export const toProverScorePercentScale = (score: number, totalPower: number): string => {
+    if (totalPower !== 0) {
+        const percentage = (score * 100 / totalPower).toFixed(2);
+        return percentage;
+    } else {
+        return "0";
+    }
+};
+
 export const concatTransitionInputsOrOutputs = (inputs: TransitionInput[]): string => {
     return inputs.reduce((accumulator: string, input: TransitionInput) => {
         accumulator += `${input.type}: ${input.id}, `;
@@ -136,12 +149,7 @@ export const updateElapsedTime = (latestBlock: Ref<Block | null>, elapsedTime: R
     }
 };
 
-export const fetchBlocksForPage = (blockParams: Ref<BlockParams>, loading2: Ref<boolean>, blocks: Ref<Block[]>): void => {
-    const { currentPage, pageSize, totalRecords } = blockParams.value;
-    const start: number = Math.max(totalRecords - (currentPage * pageSize) + 1, 1);
-    const end: number = totalRecords - ((currentPage - 1) * pageSize) + 1;
-    getBlocks(start, end, loading2, blocks);
-};
+
 
 export const formatTimestamp = (timestamp: number | undefined, locale: string = 'en-US'): string => {
     if (timestamp === undefined) {
@@ -155,6 +163,7 @@ export const formatTimestamp = (timestamp: number | undefined, locale: string = 
     }
 
     const options: Intl.DateTimeFormatOptions = { 
+        year: 'numeric',
         month: 'short', 
         day: '2-digit', 
         hour: 'numeric', 
@@ -171,6 +180,26 @@ export const formatTimestamp = (timestamp: number | undefined, locale: string = 
         return 'Error formatting date';
     }
 }; 
+
+
+export const formatTimestampYYYYMMDD = (timestamp: number | undefined, locale: string = 'en-US'): string => {
+    if (timestamp === undefined) {
+        return 'Invalid Timestamp';
+    }
+
+    const date = new Date(timestamp * 1000);
+    
+    if (isNaN(date.getTime())) {
+        return 'Invalid Date';
+    }
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}; 
+
 
 export const getBadgeNetwork = (status: number | undefined): string => {
     switch (status) {
@@ -229,3 +258,33 @@ export const getBondingState = (status: boolean): string => {
             return 'closed';
     }
 };
+
+
+export const proverScorePercentScaleClass = (rank: number): string => {
+    if (rank === 1) {
+        return 'text-red-500 ml-3 font-medium';
+    } else if (rank === 2) {
+        return 'text-orange-500 ml-3 font-medium';
+    } else if (rank === 3) {
+        return 'text-yellow-500 ml-3 font-medium';
+    } else if (rank === 4) {
+        return 'text-green-500 ml-3 font-medium';
+    } else {
+        return 'text-blue-500 ml-3 font-medium';
+    }
+};
+
+
+export const proverScorePercentScaleBarClass = (rank: number): string => {
+    if (rank === 1) {
+        return 'bg-red-500 h-full';
+    } else if (rank === 2) {
+        return 'bg-orange-500 h-full';
+    } else if (rank === 3) {
+        return 'bg-yellow-500 h-full';
+    } else if (rank === 4) {
+        return 'bg-green-500 h-full';
+    } else {
+        return 'bg-blue-500 h-full';
+    }
+}

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getLatestBlockFromLocalStorage  } from '@/commons/commonService';
+import { getLatestBlockFromLocalStorage, fetchBlocksForPage } from '@/commons/commonService';
 
 const loading1 = ref<boolean>(true);
 const loading2 = ref<boolean>(true);
 const latestBlock = ref<Block | null>(null); 
 const blocks = ref<Block[]>([]);
-const blockParams = ref<BlockParams>({
+const blockParams = ref<TableParams>({
     currentPage: 1,
     pageSize: 20,
     totalRecords: 1

@@ -6,12 +6,14 @@ export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
             programs: '프로그램',
             blocks: '블록',
             transactions: '트랜잭션',
+            provers: '증명자',
         },
         'ENG': {
             validators: 'Validators',
             programs: 'Programs',
             blocks: 'Blocks',
             transactions: 'Transactions',
+            provers: 'Provers',
         },
     };
 
@@ -219,9 +221,25 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Loading ...',
             KOR: '로딩중 ...'
         },
+        more: {
+            ENG: 'More',
+            KOR: '더 보기'
+        },
         network: {
             ENG: 'Network',
             KOR: '네트워크'
+        },
+        networkDelegators: {
+            ENG: 'Network Delegators',
+            KOR: '네트워크 위임자들'
+        },
+        networkMiners: {
+            ENG: 'Network Miners',
+            KOR: '네트워크 채굴자들'
+        },
+        networkValidators: {
+            ENG: 'Network Validators',
+            KOR: '네트워크 검증자들'
         },
         noDataFound: {
             ENG: 'No data found.',
@@ -242,6 +260,14 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
         outputs: {
             ENG: 'Outputs',
             KOR: '출력값들'
+        },
+        power: {
+            ENG: 'Power',
+            KOR: '파워'
+        },
+        powerOfRatio: {
+            ENG: 'Power / Ratio',
+            KOR: '파워 / 비율'
         },
         previousBlockHash: {
             ENG: 'Previous Block Hash',
@@ -274,6 +300,14 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
         proofTarget: {
             ENG: 'Proof Target',
             KOR: '증명 대상'
+        },
+        prover: {
+            ENG: 'Prover',
+            KOR: '증명자'      
+        },
+        provers: {
+            ENG: 'Provers',
+            KOR: '증명자들'      
         },
         publicCredits: {
             ENG: 'Public Credits',
@@ -326,6 +360,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
         stake: {
             ENG: 'Stake',
             KOR: '스테이크'
+        },
+        speed24h: {
+            ENG: 'Speed(24h)',
+            KOR: '속도(24시간)'
         },
         startingRound: {
             ENG: 'Starting Round',
@@ -394,7 +432,7 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
         view: {
             ENG: 'View',
             KOR: '보기'
-        }
+        },
     };
 
     const result: Record<string, string> = {};

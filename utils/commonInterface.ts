@@ -137,7 +137,7 @@ export interface Transition {
     address: string;
 }
 
-export interface BlockParams {
+export interface TableParams {
     currentPage: number;
     pageSize: number;
     totalRecords: number;
@@ -176,4 +176,30 @@ export interface Validator {
     stake: number;
     bondingState: boolean;
     rank: number;
+}
+
+export interface MinersInfo {
+    total: number;
+    new: number;
+}
+
+export interface Prover {
+    address: string;
+    totalPower: number;
+    power: number;
+    score: number;
+    lastBlock: boolean;
+    rank: number;
+}
+
+export interface LineChart{
+    labels: string[];
+    datasets: {
+        label: string;
+        data: number[];
+        fill: boolean;
+        backgroundColor: string;
+        borderColor: string;
+        tension: number;
+    }[];
 }
