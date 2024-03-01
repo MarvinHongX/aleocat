@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.timestamp }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ formatTimestamp(latestBlock?.header.metadata.network) }}
+                            >{{ formatTimestamp(latestBlock?.header.metadata.timestamp) }}
                         </div>
                     </div>
                 </div>
