@@ -48,37 +48,41 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column dataType="numeric" style="min-width: 4rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.rank }} </template>
                         <template #body="{ data }">
                             {{ data.rank }}
                         </template>
                     </Column>
-                    <Column :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <NuxtLink v-if="data.address" :to="'/account/' + data.address">
-                                    <span>{{ data.address }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.address }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.address,7,1) }}
+                                    </div>
                                 </NuxtLink>
-                                <span v-else>{{ data.address }}</span>
                             </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.powerOfRatio }} </template>
                         <template #body="{ data }">
-                            <span>
+                            <span class="data-non-shorten-500">
                                 {{ toProverScoreScale(data.score) }}
                             </span>
                             <span :class="proverScorePercentScaleClass(data.rank)">{{ toProverScorePercentScale(data.score, data.totalPower) }}%</span>
 
-                            <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+                            <div class="data-non-shorten-500 surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px;">
                                 <div :class="proverScorePercentScaleBarClass(data.rank)" :style="{ width: toProverScorePercentScale(data.score, data.totalPower) + '%' }"></div>
                             </div>
                          </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.latestBlock }} </template>
                         <template #body="{ data }">
                             {{ data.lastBlock?.toLocaleString() }}

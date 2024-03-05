@@ -1,3 +1,3 @@
 export const useLoadingState = () => {
-    return useState('loadingState', () => true);
+    return useState('loadingState', (): boolean => true);
 };

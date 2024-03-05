@@ -294,28 +294,41 @@ export const getTop10Growth = (
     top10Growth: Ref<LineChart>
 ): void => {
     const COLORS = [
-        'rgba(255, 99, 132, 0.2)', // 빨
-        'rgba(255, 159, 64, 0.2)', // 주
-        'rgba(255, 205, 86, 0.2)', // 노
-        'rgba(75, 192, 192, 0.2)', // 초
-        'rgba(54, 162, 235, 0.2)', // 파
-        'rgba(255, 99, 132, 0.2)', // 남
-        'rgba(153, 102, 255, 0.2)', // 보
-        'rgba(153, 102, 255, 0.3)', // 보
-        'rgba(153, 102, 255, 0.4)', // 보
+        'rgba(255, 99, 132, 0.8)', // 빨
+        'rgba(255, 159, 30, 0.8)', // 주
+        'rgba(255, 205, 86, 0.8)', // 노
+        'rgba(54, 192, 54, 0.5)', // 초
+        'rgba(10, 10, 255, 0.4)', // 파
+        'rgba(0, 0, 128, 0.4)', // 남
+        'rgba(128, 0, 128, 0.4)', // 보
+        'rgba(128, 0, 128, 0.3)', // 보
+        'rgba(128, 0, 128, 0.2)', // 보
+        'rgba(128, 0, 128, 0.1)', // 보
     ];
+
     $fetch('/api/info/scores')
         .then((response: any) => {
             const responseData = response.data;
+
+            // Calculate the total scores for each address
+            const addressScores: { [address: string]: number } = {};
+            Object.keys(responseData).forEach((key: string) => {
+                const addressData = responseData[key];
+                const totalScore = addressData.reduce((acc: number, item: any) => acc + item.value, 0);
+                addressScores[key] = totalScore;
+            });
+
+            // Sort addresses based on total scores
+            const sortedAddresses = Object.keys(addressScores).sort((a, b) => addressScores[b] - addressScores[a]);
 
             const labels: string[] = responseData[Object.keys(responseData)[0]].map((item: any) => formatTimestampYYYYMMDD(item.timestamp));
 
             const lineChartData: LineChart = {
                 labels: labels,
-                datasets: Object.keys(responseData).map((key: string, index: number) => {
+                datasets: sortedAddresses.map((address: string, index: number) => {
                     const dataset = {
-                        label: key,
-                        data: responseData[key].map((item: any) => item.value),
+                        label: shortenStr(address),
+                        data: responseData[address].map((item: any) => item.value / 1000000.0),
                         fill: false,
                         backgroundColor: '',
                         borderColor: '',
@@ -328,6 +341,7 @@ export const getTop10Growth = (
                     return dataset;
                 })
             };
+
             top10Growth.value = lineChartData;
             if (loading15.value) loading15.value = false;
         })
@@ -345,7 +359,7 @@ export const getDailyPower = (
         .then((response: any) => {
             const responseData = response.power || [];
             const labels: string[] = responseData.map((item: any) => item.date.toString());
-            const rewards: number[] = responseData.map((item: any) => parseFloat(item.reward));
+            const rewards: number[] = responseData.map((item: any) => parseFloat(item.reward) / 1000000.0);
 
             const lineChartData: LineChart = {
                 labels: labels,

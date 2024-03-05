@@ -682,6 +682,10 @@ p-cascadeselect.p-cascadeselect-clearable .p-cascadeselect-clear-icon {
   right: 2.357rem;
 }
 
+.p-chart canvas {
+  aspect-ratio: auto 1 / 1 !important; 
+}
+
 .p-checkbox {
   width: 18px;
   height: 18px;

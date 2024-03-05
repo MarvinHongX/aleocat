@@ -67,30 +67,34 @@ const clearFilter = () => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column filterField="transactionId" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 10rem">
+                    <Column filterField="transactionId" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }">
                         <template #header v-if="!loadingState"> {{ labels.transactionId }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <NuxtLink v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
-                                    <span>{{ data.transactionId }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.transactionId }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.transactionId,7,1) }}
+                                    </div>
                                 </NuxtLink>
-                                <span v-else>{{ data.transactionId }}</span>
                             </div>
                         </template>
                     </Column>
-                    <Column filterField="fee" dataType="numeric" style="min-width: 10rem">
+                    <Column filterField="fee" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.fee }} </template>
                         <template #body="{ data }">
                             {{ toAleoScale(data.fee) }}
                         </template>
                     </Column>
-                    <Column filterField="blockHeight" dataType="numeric" style="min-width: 10rem">
+                    <Column filterField="blockHeight" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.inBlock }} </template>
                         <template #body="{ data }">
                             {{ data.blockHeight.toLocaleString() }}
                         </template>
                     </Column>
-                    <Column filterField="timestamp" dataType="datetime" style="min-width: 10rem">
+                    <Column filterField="timestamp" dataType="datetime">
                         <template #header v-if="!loadingState"> {{ labels.timestamp }} </template>
                         <template #body="{ data }">
                             {{ formatTimestamp(data.timestamp) }}

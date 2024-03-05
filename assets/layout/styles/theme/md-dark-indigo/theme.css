@@ -6116,6 +6116,10 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   line-height: 3rem;
 }
 
+.p-chart canvas {
+  aspect-ratio: auto 1 / 1 !important; 
+}
+
 .p-chip {
   background-color: rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.87);

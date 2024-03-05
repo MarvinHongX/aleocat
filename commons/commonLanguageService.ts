@@ -349,6 +349,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Round',
             KOR: '라운드'
         },
+        solutions: {
+            ENG: 'Solutions',
+            KOR: '솔루션들'
+        },
         solutionsRoot: {
             ENG: 'Solutions Root',
             KOR: '솔루션 루트'

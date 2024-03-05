@@ -58,7 +58,7 @@ const dailyPower = ref<LineChart>({
 const labels = useLabels();
 const sentences = useSentences();
 const loadingState = useLoadingState();
-
+const elapsedTime = useLatestBlockElapsedTime();
 const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD } = useCommonConstant();
 
 
@@ -68,7 +68,6 @@ const intervalAction = () => {
         getLatestBlocksAndTransactions(tableParams, loading2, loading3, blocks, transactions);
     }
 }
-
 
 onMounted(() => {
     getMinersInfo(minersInfo);
@@ -130,7 +129,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.timestamp }}</span>
                         <div class="text-900 font-medium text-xl" v-if="!loading1"
-                            >{{ formatTimestamp(latestBlock?.header.metadata.timestamp) }}
+                            >{{ elapsedTime }}
                         </div>
                     </div>
                 </div>
@@ -222,7 +221,12 @@ onBeforeUnmount(() => {
                     <Column field="block_hash"  style="width: 15%">
                         <template #header v-if="!loadingState"> {{ labels.blockHash }} </template>
                         <template #body="{ data }">
-                            {{ data.block_hash }}
+                            <div class="data-non-shorten-650">
+                                {{ data.block_hash }}
+                            </div>
+                            <div class="data-shorten-650">
+                                {{ shortenStr(data.block_hash) }}
+                            </div>
                         </template>
                     </Column>
                 </DataTable>
@@ -255,9 +259,13 @@ onBeforeUnmount(() => {
                         <template #header v-if="!loadingState"> {{ labels.transactionId }}  </template>
                         <template #body="{ data }">
                             <NuxtLink v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
-                                <span>{{ data.transactionId }}</span>
+                                <div class="data-non-shorten-650">
+                                    {{ data.transactionId }}
+                                </div>
+                                <div class="data-shorten-650">
+                                    {{ shortenStr(data.transactionId) }}
+                                </div>
                             </NuxtLink>
-                            <span v-else>{{ data.transactionId }}</span>
                         </template>
                     </Column>
                     <Column style="width: 15%">
@@ -306,37 +314,41 @@ onBeforeUnmount(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column dataType="numeric" style="min-width: 4rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.rank }} </template>
                         <template #body="{ data }">
                             {{ data.rank }}
                         </template>
                     </Column>
-                    <Column :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <NuxtLink v-if="data.address" :to="'/account/' + data.address">
-                                    <span>{{ data.address }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.address }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.address,7,1) }}
+                                    </div>
                                 </NuxtLink>
-                                <span v-else>{{ data.address }}</span>
                             </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.powerOfRatio }} </template>
                         <template #body="{ data }">
-                            <span>
+                            <span class="data-non-shorten-500">
                                 {{ toProverScoreScale(data.score) }}
                             </span>
                             <span :class="proverScorePercentScaleClass(data.rank)">{{ toProverScorePercentScale(data.score, data.totalPower) }}%</span>
 
-                            <div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+                            <div class="data-non-shorten-500 surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px;">
                                 <div :class="proverScorePercentScaleBarClass(data.rank)" :style="{ width: toProverScorePercentScale(data.score, data.totalPower) + '%' }"></div>
                             </div>
                          </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.latestBlock }} </template>
                         <template #body="{ data }">
                             {{ data.lastBlock?.toLocaleString() }}

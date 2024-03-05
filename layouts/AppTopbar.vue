@@ -11,7 +11,7 @@ const intervalId = ref<string | number | NodeJS.Timeout | undefined>(undefined);
 const loading1 = ref<boolean>(true);
 const loading12 = ref<boolean>(true);
 const latestBlock = ref<Block | null>(null);
-const elapsedTime = ref<string>('');
+//const elapsedTime = ref<string>('');
 const aleoPrice = ref<number>(0);
 const aleoPriceChangePercentage = ref<number>(0);
 const searchValue = ref<string>('');
@@ -23,6 +23,7 @@ const labels = useLabels();
 const sentences = useSentences();
 const loadingState = useLoadingState();
 const toastMessage = useToastMessage();
+const elapsedTime = useLatestBlockElapsedTime();
 
 const { logoUrl, darkModeUrl, lightModeUrl } = useCommonComputed();
 const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD, LOADING_THRESHOLD } = useCommonConstant();
@@ -149,5 +150,3 @@ onBeforeUnmount(() => {
 
     </div>
 </template>
-
-<style lang="scss" scoped></style>

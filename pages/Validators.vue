@@ -25,7 +25,15 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.totalStake }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading11">{{ latestCommittee?.total_stake.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading11">
+                        
+                        <div class="data-non-shorten-950">
+                            {{ latestCommittee?.total_stake.toLocaleString() }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenNum(latestCommittee?.total_stake ?? 0) }}
+                        </div>
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.startingRound }}</span>
@@ -48,30 +56,39 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column dataType="numeric" style="min-width: 4rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.rank }} </template>
                         <template #body="{ data }">
                             {{ data.rank }}
                         </template>
                     </Column>
-                    <Column :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <NuxtLink v-if="data.address" :to="'/account/' + data.address">
-                                    <span>{{ data.address }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.address }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.address,7,1) }}
+                                    </div>
                                 </NuxtLink>
-                                <span v-else>{{ data.address }}</span>
                             </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.stake }} </template>
                         <template #body="{ data }">
-                            {{ data.stake?.toLocaleString() }}
+                            <div class="data-non-shorten-950">
+                                {{ data.stake?.toLocaleString() }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ shortenNum(data.stake) }}
+                            </div>
                         </template>
                     </Column>
-                    <Column style="min-width: 5rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.bondingState }} </template>
                         <template #body="{ data }">
                             <Tag :severity="getBadgeBondingState(data.bondingState)">{{ getBondingState(data.bondingState) }}</Tag>

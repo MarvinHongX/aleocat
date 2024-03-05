@@ -25,3 +25,63 @@
         top: 100px;
     }
 }
+
+
+.data-shorten-950 {
+    display: none;
+}
+.data-shorten-650 {
+    display: none;
+}
+.data-shorten-600 {
+    display: none;
+}
+.data-shorten-500 {
+    display: none;
+}
+
+
+@media (max-width: 950px) {
+    .data-non-shorten-950 {
+        display: none;
+    }
+    .data-shorten-950 {
+        display: block;
+    }
+}
+@media (max-width: 650px) {
+    .data-non-shorten-650 {
+        display: none;
+    }
+    .data-shorten-650 {
+        display: block;
+    }
+}
+@media (max-width: 600px) {
+    .data-non-shorten-600 {
+        display: none;
+    }
+    .data-shorten-600 {
+        display: block;
+    }
+}
+@media (max-width: 500px) {
+    .data-non-shorten-500 {
+        display: none;
+    }
+    .data-shorten-500 {
+        display: block;
+    }
+    .card {
+        padding: 1rem;
+    }
+}
+
+
+
+
+
+
+
+
+

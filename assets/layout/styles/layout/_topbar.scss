@@ -84,7 +84,7 @@
         }
     
         .layout-topbar-body-menubar .p-menubar-end {
-            width: 100%;    
+            width: 70%;
         }
 
         .layout-topbar-body-menubar-end {
@@ -156,7 +156,7 @@
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1150px) {
     .layout-topbar {
         justify-content: space-between;
         padding: 5px 5px;
@@ -230,6 +230,32 @@
                     font-weight: medium;
                     display: block;
                 }
+            }
+        }
+    }
+}
+
+@media (max-width: 991px) {
+    .layout-topbar {
+        .layout-topbar-top {
+            padding: 10px;
+        }
+        .layout-topbar-top {
+            padding: 10px;
+        }
+        .layout-topbar-body {
+            .layout-topbar-body-menubar {
+                padding: 16px 1px 10px 1px;
+            }
+        }
+    }
+}
+
+@media (max-width: 961px) {
+    .layout-topbar {
+        .layout-topbar-body {
+            .layout-topbar-body-menubar .p-menubar-end {
+                width: 100%;
             }
         }
     }

@@ -62,24 +62,28 @@ const clearFilter = () => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column filterField="id" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                    <Column filterField="id" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }">
                         <template #header v-if="!loadingState"> {{ labels.programId }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <NuxtLink v-if="data.id" :to="'/program/' + data.id">
-                                    <span>{{ data.id }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.id }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.id,10,1) }}
+                                    </div>
                                 </NuxtLink>
-                                <span v-else>{{ data.id }}</span>
                             </div>
                         </template>
                     </Column>
-                    <Column filterField="block_height" dataType="numeric" style="min-width: 10rem">
+                    <Column filterField="block_height" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.inBlock }} </template>
                         <template #body="{ data }">
                             {{ data.block_height?.toLocaleString() }}
                         </template>
                     </Column>
-                    <Column filterField="block_timestamp" dataType="datetime" style="min-width: 10rem">
+                    <Column filterField="block_timestamp" dataType="datetime">
                         <template #header v-if="!loadingState"> {{ labels.timestamp }} </template>
                         <template #body="{ data }">
                             {{ formatTimestamp(data.block_timestamp) }}

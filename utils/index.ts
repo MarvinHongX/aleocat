@@ -121,34 +121,40 @@ export const concatTransitionInputsOrOutputs = (inputs: TransitionInput[]): stri
         return accumulator;
     }, '').slice(0, -2); 
 };
-  
+
+
+export const getElapsedTime = (timestamp: number): string => {
+    let elapsedTime: string = '';
+
+    const currentTime: number = Math.floor(new Date().getTime() / 1000);
+    const elapsedSeconds: number = currentTime - timestamp;
+
+    if (elapsedSeconds < 60) {
+        elapsedTime = `${elapsedSeconds}s ago`;
+    } else {
+        const elapsedMinutes: number = Math.floor(elapsedSeconds / 60);
+        if (elapsedMinutes < 60) {
+            const remainingSeconds: number = elapsedSeconds % 60;
+            elapsedTime = `${elapsedMinutes}m ${remainingSeconds}s ago`;
+        } else {
+            const elapsedHours: number = Math.floor(elapsedMinutes / 60);
+            elapsedTime = `${elapsedHours}h ago`;
+        }
+    }
+
+    return elapsedTime;
+};
+
 export const updateElapsedTime = (latestBlock: Ref<Block | null>, elapsedTime: Ref<string>): void => {
     if (latestBlock.value && 
         latestBlock.value.header && 
         latestBlock.value.header.metadata && 
         latestBlock.value.header.metadata.timestamp
-    ) {
+    ) { 
         const timestamp: number = latestBlock.value.header.metadata.timestamp;
-        const currentTime: number = Math.floor(new Date().getTime() / 1000);
-        const elapsedSeconds: number = currentTime - timestamp;
-
-        let updatedElapsedTime: string = '';
-
-        if (elapsedSeconds < 60) {
-            updatedElapsedTime = `${elapsedSeconds}s ago`;
-        } else {
-            const elapsedMinutes: number = Math.floor(elapsedSeconds / 60);
-            if (elapsedMinutes < 60) {
-                updatedElapsedTime = `${elapsedMinutes}m ago`;
-            } else {
-                const elapsedHours: number = Math.floor(elapsedMinutes / 60);
-                updatedElapsedTime = `${elapsedHours}h ago`;
-            }
-        }
-        elapsedTime.value = updatedElapsedTime;
+        elapsedTime.value = getElapsedTime(timestamp);
     }
 };
-
 
 
 export const formatTimestamp = (timestamp: number | undefined, locale: string = 'en-US'): string => {
@@ -200,6 +206,47 @@ export const formatTimestampYYYYMMDD = (timestamp: number | undefined, locale: s
     return `${year}-${month}-${day}`;
 }; 
 
+
+export const shortenStr = (str: string, prefixLength: number = 7, suffixLength: number = 7): string => {
+    if (!str || typeof str !== 'string') {
+        return '';
+    }
+
+    const maxLength: number = prefixLength + suffixLength + 3; // 3 is for '...'
+    if (str.length <= maxLength) {
+        return str; // No need to shorten
+    }
+
+    const prefix: string = str.slice(0, prefixLength);
+    const suffix: string = str.slice(-suffixLength);
+
+    return `${prefix}...${suffix}`;
+}
+
+
+export const formatNumberWithCommas = (num: number): string => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+
+export const shortenNum = (num: number): string => {
+    const TRILLION: number = 1e12;
+    const BILLION: number = 1e9;
+    const MILLION: number = 1e6;
+    const THOUSAND: number = 1e3;
+    
+    if (num >= TRILLION) {
+        return (num / TRILLION).toFixed(2).replace(/\.0$/, '') + 'T';
+    } else if (num >= BILLION) {
+        return (num / BILLION).toFixed(2).replace(/\.0$/, '') + 'B';
+    } else if (num >= MILLION) {
+        return (num / MILLION).toFixed(2).replace(/\.0$/, '') + 'M';
+    } else if (num >= THOUSAND) {
+        return (num / THOUSAND).toFixed(2).replace(/\.0$/, '') + 'K';
+    } else {
+        return formatNumberWithCommas(num);
+    }
+};
 
 export const getBadgeNetwork = (status: number | undefined): string => {
     switch (status) {
