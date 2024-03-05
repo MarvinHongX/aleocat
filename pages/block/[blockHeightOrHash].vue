@@ -44,8 +44,14 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.blockHash }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5"
-                    >{{ block?.block_hash }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.block_hash }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.block_hash ?? '', 13, 7) }}
+                        </div>
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.network }}</span>
@@ -69,41 +75,92 @@ onMounted(() => {
                     <span class="text-900 line-height-3" v-if="!loading5"
                     >
                     <NuxtLink :to="'/block/' + block?.previous_hash">
-                        {{ block?.previous_hash }}
+                        <div class="data-non-shorten-950">
+                            {{ block?.previous_hash }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.previous_hash ?? '', 15, 7) }}
+                        </div>
                     </NuxtLink>
                     </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.previousStateRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.previous_state_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.previous_state_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.previous_state_root ?? '', 15, 7) }}
+                        </div>
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transactionsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.transactions_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.transactions_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.transactions_root ?? '', 15, 7) }}
+                        </div>
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.finalizeRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.finalize_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.finalize_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.finalize_root ?? '', 15, 7) }}
+                        </div>      
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.ratificationsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.ratifications_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.ratifications_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.ratifications_root ?? '', 15, 7) }}
+                        </div>   
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.solutionsRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.solutions_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">   
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.solutions_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.solutions_root ?? '', 15, 7) }}
+                        </div>   
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.subdagRoot }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.subdag_root }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        <div class="data-non-shorten-950">
+                            {{ block?.header.subdag_root }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(block?.header.subdag_root ?? '', 15, 7) }}
+                        </div>   
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.cumulativeWeight }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.cumulative_weight.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        {{ block?.header.metadata.cumulative_weight.toLocaleString() }}
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.cumulativeProofTarget }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading5">{{ block?.header.metadata.cumulative_proof_target.toLocaleString() }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading5">
+                        {{ block?.header.metadata.cumulative_proof_target.toLocaleString() }}
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.coinbaseTarget }}</span>
@@ -144,47 +201,60 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column dataType="numeric" style="min-width: 2rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.index }} </template>
                         <template #body="{ data }">
                             {{ data.index }}
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.transactionId }} </template>
                         <template #body="{ data }">
                             <NuxtLink :to="'/transaction/' + data.transactionId">
                                 <div class="flex align-items-center gap-2">
-                                    <span>{{ data.transactionId }}</span>
+                                    <span>
+                                        <div class="data-non-shorten-950">
+                                            {{ data.transactionId }}
+                                        </div>
+                                        <div class="data-shorten-950">
+                                            {{ shortenStr(data.transactionId ?? '', 7, 1) }}
+                                        </div>   
+                                    </span>
                                 </div>
                             </NuxtLink>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.fee }} </template>
                         <template #body="{ data }">
-                            {{ toAleoScale(data.fee) }}
+                            <div class="data-non-shorten-950">
+                                {{ toAleoScale(data.fee) }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ toAleoScale(data.fee, 2) }}
+                            </div>   
+                            
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.inBlock }} </template>
                         <template #body="{ data }">
                             {{ data.blockHeight.toLocaleString() }}
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.status }} </template>
                         <template #body="{ data }">
                             <Tag :severity="getBadgeStatus(data.status)">{{ data.status }}</Tag>
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.type }} </template>
                         <template #body="{ data }">
                             <Tag :severity="getBadgeType(data.type)">{{ data.type }}</Tag>
                         </template>
                     </Column>
-                    <Column dataType="datetime" style="min-width: 10rem">
+                    <Column dataType="datetime">
                         <template #header v-if="!loadingState"> {{ labels.timestamp }} </template>
                         <template #body="{ data }">
                             {{ formatTimestamp(data.timestamp) }}
@@ -208,28 +278,43 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column style="min-width: 3rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <NuxtLink :to="'/account/' + data.address">
                                 <div class="flex align-items-center gap-2">
-                                    <span>{{ data.address }}</span>
+                                    <div class="data-non-shorten-950">
+                                        {{ data.address }}
+                                    </div>
+                                    <div class="data-shorten-950">
+                                        {{ shortenStr(data.address ?? '', 7, 1) }}
+                                    </div>   
                                 </div>
                             </NuxtLink>
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.nonce }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <span>{{ data.nonce }}</span>
+                                <div class="data-non-shorten-950">
+                                    {{ data.nonce }}
+                                </div>
+                                <div class="data-shorten-950">
+                                    {{ shortenStr(data.nonce.toString() ?? '', 5, 5) }}
+                                </div> 
                             </div>
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.commitment }} </template>
                         <template #body="{ data }">
-                            {{ data.commitment }}
+                            <div class="data-non-shorten-950">
+                                {{ data.commitment }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ shortenStr(data.commitment ?? '') }}
+                            </div>   
                         </template>
                     </Column>
                 </DataTable>
@@ -252,6 +337,6 @@ onMounted(() => {
 }
 
 .block {
-    width: 15%;
+    width: 25%;
 }
 </style>

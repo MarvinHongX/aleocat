@@ -88,7 +88,7 @@ export const sumInputsFee = (inputs: StringInput[]): number => {
     }, 0);
 };
 
-export const toAleoScale = (value: string | number | undefined): string => {
+export const toAleoScale = (value: string | number | undefined, fractionDigits: number = 6): string => {
     let result: number = 0;
 
     if (typeof value === 'string' && value.endsWith('u64')) {
@@ -97,12 +97,12 @@ export const toAleoScale = (value: string | number | undefined): string => {
         result = value as number;
     }
 
-    const scaledResult: string = (result / 1000000.0).toFixed(6);
-    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
+    const scaledResult: string = (result / 1000000.0).toFixed(fractionDigits);
+    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
 };
 
-export const toProverScoreScale = (value: number): string => {
-    const scaledResult: string =  (value / 1000000.0)?.toFixed(6)
+export const toProverScoreScale = (value: number, fractionDigits: number = 6): string => {
+    const scaledResult: string =  (value / 1000000.0)?.toFixed(fractionDigits)
     return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
 };
 

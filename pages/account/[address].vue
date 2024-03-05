@@ -39,7 +39,14 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.address }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading10">{{ account?.address }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading10">
+                        <div class="data-non-shorten-950">
+                            {{ account?.address }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(account?.address ?? '', 15, 10) }}
+                        </div>
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.publicCredits }}</span>
@@ -64,27 +71,37 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.transitionId }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <span>{{ data.transition_id }}</span>
+                                <div class="data-non-shorten-950">
+                                    {{ data.transition_id }}
+                                </div>
+                                <div class="data-shorten-950">
+                                    {{ shortenStr(data.transition_id ?? '', 7, 1) }}
+                                </div>
                             </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.transferAmount }} </template>
                         <template #body="{ data }">
-                            {{ toAleoScale(data.transfer_amount) }}
+                            <div class="data-non-shorten-950">
+                                {{ toAleoScale(data.transfer_amount) }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ toAleoScale(data.transfer_amount, 2) }}
+                            </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.inBlock }} </template>
                         <template #body="{ data }">
                             {{ data.block_height.toLocaleString() }}
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.timestamp }} </template>
                         <template #body="{ data }">
                             {{ formatTimestamp(data.timestamp) }}

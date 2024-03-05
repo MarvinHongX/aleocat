@@ -39,7 +39,14 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transactionId }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading7">{{ transaction?.transactionId }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading7">
+                        <div class="data-non-shorten-950">
+                            {{ transaction?.transactionId }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(transaction?.transactionId ?? '', 15, 7) }}
+                        </div> 
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.fee }}</span>
@@ -79,33 +86,43 @@ onMounted(() => {
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.transitionId }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <span>{{ data.transitionId }}</span>
+                                <div class="data-non-shorten-950">
+                                    {{ data.transitionId }}
+                                </div>
+                                <div class="data-shorten-950">
+                                    {{ shortenStr(data.transitionId ?? '', 5, 5) }}
+                                </div> 
                             </div>
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.programId }} </template>
                         <template #body="{ data }">
-                            {{ data.program }}
+                            <div class="data-non-shorten-950">
+                                {{ data.program }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ shortenStr(data.program ?? '', 10, 1) }}
+                            </div> 
                         </template>
                     </Column>
-                    <Column dataType="numeric" style="min-width: 10rem">
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.functionName }} </template>
                         <template #body="{ data }">
                             {{ data.function }}
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.inputs }} </template>
                         <template #body="{ data }">
                             {{ concatTransitionInputsOrOutputs(data.inputs) }}
                         </template>
                     </Column>
-                    <Column style="min-width: 10rem">
+                    <Column>
                         <template #header v-if="!loadingState"> {{ labels.outputs }} </template>
                         <template #body="{ data }">
                             {{ concatTransitionInputsOrOutputs(data.outputs) }}
@@ -131,6 +148,6 @@ onMounted(() => {
 }
 
 .block {
-    width: 10%;
+    width: 25%;
 }
 </style>

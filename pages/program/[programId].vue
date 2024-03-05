@@ -40,14 +40,26 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.programId }}</span>
-                    <span class="text-900 line-height-3" v-if="!loading9">{{ program?.id }}</span>
+                    <span class="text-900 line-height-3" v-if="!loading9">
+                        <div class="data-non-shorten-950">
+                            {{ program?.id }}
+                        </div>
+                        <div class="data-shorten-950">
+                            {{ shortenStr(program?.id ?? '', 15, 10) }}
+                        </div> 
+                    </span>
                 </div>
                 <div class="flex flex-row">
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transaction }}</span>
                     <span class="text-900 line-height-3" v-if="!loading9"
                     >
                         <NuxtLink v-if="program?.transactionId" :to="'/transaction/' + program.transactionId" rel="noopener">
-                            {{ program.transactionId }}
+                            <div class="data-non-shorten-950">
+                                {{ program?.transactionId }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ shortenStr(program?.transactionId ?? '', 15, 10) }}
+                            </div> 
                         </NuxtLink>
                         <span v-else>-</span>
                     </span>
@@ -92,6 +104,6 @@ onMounted(() => {
 }
 
 .block {
-    width: 10%;
+    width: 25%;
 }
 </style>

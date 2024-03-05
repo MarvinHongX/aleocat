@@ -71,7 +71,7 @@ const clearFilter = () => {
                                         {{ data.id }}
                                     </div>
                                     <div class="data-shorten-950">
-                                        {{ shortenStr(data.id,10,1) }}
+                                        {{ shortenStr(data.id, 10, 1) }}
                                     </div>
                                 </NuxtLink>
                             </div>
