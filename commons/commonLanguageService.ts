@@ -1,5 +1,5 @@
 export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
-    const language = selectedLanguage.value.code;
+    const language: string = selectedLanguage.value ? selectedLanguage.value.code : 'ENG';
     const menuLabels: Record<string, MenuLabel> = {
         'KOR': {
             validators: '검증자',
@@ -19,8 +19,7 @@ export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
 
     const menuItems: MenuItem[] = Object.keys(menuLabels[language]).map(key => ({
         label: menuLabels[language][key],
-        route: key === 'home' ? '/' : `/${key}`,
-        key: key,
+        route: key === 'home' ? '/' : `/${key}`
     }));
     return menuItems;
 };
@@ -28,7 +27,7 @@ export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
 
 
 export const getSentences = (selectedLanguage: Ref<Language>): Record<string, string> => {
-    const language: string = selectedLanguage.value.code;
+    const language: string = selectedLanguage.value ? selectedLanguage.value.code : 'ENG';
     const sentences: Sentences = {
         noResultsFound: {
             ENG: 'No results found.',
@@ -76,7 +75,7 @@ export const getSentences = (selectedLanguage: Ref<Language>): Record<string, st
 
 
 export const getLabels = (selectedLanguage: Ref<Language>): Record<string, string> => {
-    const language: string = selectedLanguage.value.code;
+    const language: string = selectedLanguage.value ? selectedLanguage.value.code : 'ENG';
     const labels: Labels = {
         acceptedPuzzleSolutions: {
             ENG: 'Accepted Puzzle Solutions',

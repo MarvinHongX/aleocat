@@ -1,5 +1,5 @@
 const { layoutConfig } = useLayout();
 
 export const useSelectedLanguage = () => {  
-    return useState('selectedLanguage', () => layoutConfig.language.value);
+    return useState('selectedLanguage', (): Language => layoutConfig.language.value);
 };

@@ -32,7 +32,7 @@ const handleSearch = () => {
     search(searchValue, toast, toastMessage);
 };
 
-const handleMenuItemClick = (key: string | undefined) => {
+const handleMenuItemClick = (key: string) => {
     setActiveMenuItem(key ?? '');
 };
 
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
                     </template>
                     <template #item="{ item, props }">
                         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-                            <a v-ripple class="flex align-items-center" :href="href" v-bind="props.action" @click="handleMenuItemClick(item.key)">
+                            <a v-ripple class="flex align-items-center" :href="href" v-bind="props.action" @click="handleMenuItemClick('')">
                                 <span class="ml-2"> {{ item.label }} </span>
                             </a>
                         </router-link>

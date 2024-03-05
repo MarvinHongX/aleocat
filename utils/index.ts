@@ -47,13 +47,19 @@ export const updateLayoutConfigFromLocalStorage = (key: string) => {
             selectedLanguage.value = newConfig.language;
             onChangeLanguage(selectedLanguage);
         } catch (error) {
-            console.error('Error parsing layout configuration from local storage:', error);
+            //console.error('Error parsing layout configuration from local storage:', error);
+            saveSomethingToLocalStorage(key, layoutConfig);
         };
-        setLoaded();
+    } else {
+        saveSomethingToLocalStorage(key, layoutConfig);
     }
+    setLoaded();
 };
 
 export const onChangeTheme = (theme: string, darkTheme: boolean): void => {
+    if (!theme){
+        return
+    }
     const elementId: string = 'theme-css';
     const linkElement: HTMLLinkElement | null = document.getElementById(elementId) as HTMLLinkElement | null;
 
@@ -81,6 +87,9 @@ export const onChangeTheme = (theme: string, darkTheme: boolean): void => {
 };
 
 export const onChangeLanguage = (selectedLanguage: Ref<Language>): void => {
+    if (!selectedLanguage.value){
+        return
+    }
     const language: Language = selectedLanguage.value;
     setLanguage(language);
 

@@ -85,7 +85,13 @@ const clearFilter = () => {
                     <Column filterField="fee" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.fee }} </template>
                         <template #body="{ data }">
-                            {{ toAleoScale(data.fee) }}
+                            <div class="data-non-shorten-950">
+                                {{ toAleoScale(data.fee) }}
+                            </div>
+                            <div class="data-shorten-950">
+                                {{ toAleoScale(data.fee, 2) }}
+                            </div>
+                            
                         </template>
                     </Column>
                     <Column filterField="blockHeight" dataType="numeric">
