@@ -1,5 +1,5 @@
-export const useSelectedLanguage = (): Ref<Language> => {
-    return ref<Language>(
-        { name: 'English', code: 'ENG' },
-    );
+const { layoutConfig } = useLayout();
+
+export const useSelectedLanguage = () => {  
+    return useState('selectedLanguage', () => layoutConfig.language.value);
 };

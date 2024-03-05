@@ -59,11 +59,11 @@ const labels = useLabels();
 const sentences = useSentences();
 const loadingState = useLoadingState();
 const elapsedTime = useLatestBlockElapsedTime();
-const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD } = useCommonConstant();
+const { LATEST_BLOCK_KEY, INTERVAL_THRESHOLD } = useCommonConstant();
 
 
 const intervalAction = () => {
-    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY)) {
+    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LATEST_BLOCK_KEY)) {
         tableParams.value.totalRecords = latestBlock.value?.header?.metadata?.height ?? 1;
         getLatestBlocksAndTransactions(tableParams, loading2, loading3, blocks, transactions);
     }

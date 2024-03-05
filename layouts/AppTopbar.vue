@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { getAleoPrice, getLatestBlockAndSaveToLocalStorage, getLatestBlockFromLocalStorage } from '@/commons/commonService';
 import { useToast } from "primevue/usetoast";
 
-const { layoutConfig } = useLayout();
+const { layoutConfig, setActiveMenuItem } = useLayout();
 const toast = useToast();
 
 const intervalCount = ref<number>(0);
@@ -11,7 +11,7 @@ const intervalId = ref<string | number | NodeJS.Timeout | undefined>(undefined);
 const loading1 = ref<boolean>(true);
 const loading12 = ref<boolean>(true);
 const latestBlock = ref<Block | null>(null);
-//const elapsedTime = ref<string>('');
+
 const aleoPrice = ref<number>(0);
 const aleoPriceChangePercentage = ref<number>(0);
 const searchValue = ref<string>('');
@@ -26,10 +26,14 @@ const toastMessage = useToastMessage();
 const elapsedTime = useLatestBlockElapsedTime();
 
 const { logoUrl, darkModeUrl, lightModeUrl } = useCommonComputed();
-const { LOCAL_STORAGE_KEY, INTERVAL_THRESHOLD, LOADING_THRESHOLD } = useCommonConstant();
+const { LATEST_BLOCK_KEY, INTERVAL_THRESHOLD, LOADING_THRESHOLD } = useCommonConstant();
 
 const handleSearch = () => {
     search(searchValue, toast, toastMessage);
+};
+
+const handleMenuItemClick = (key: string | undefined) => {
+    setActiveMenuItem(key ?? '');
 };
 
 watch(selectedLanguage, () => {
@@ -40,11 +44,11 @@ watch(selectedLanguage, () => {
 const intervalAction = () => {
     intervalCount.value++;
     if (loading1.value || (intervalCount.value > LOADING_THRESHOLD)){
-        getLatestBlockAndSaveToLocalStorage(LOCAL_STORAGE_KEY);
+        getLatestBlockAndSaveToLocalStorage(LATEST_BLOCK_KEY);
         
         intervalCount.value = 0;
     }
-    getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY);
+    getLatestBlockFromLocalStorage(latestBlock, loading1, LATEST_BLOCK_KEY);
     updateElapsedTime(latestBlock, elapsedTime);
     if (loading12.value){
         getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
@@ -98,12 +102,12 @@ onBeforeUnmount(() => {
                 </div>  
                 <div class="layout-topbar-top-setting">
                     <div class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', 'light')">
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', false)">
                             <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
                         </button>
                     </div>
                     <div class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', 'dark')">
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', true)">
                             <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
                         </button>
                     </div>
@@ -122,7 +126,7 @@ onBeforeUnmount(() => {
                     </template>
                     <template #item="{ item, props }">
                         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-                            <a v-ripple class="flex align-items-center" :href="href" v-bind="props.action" @click="navigate">
+                            <a v-ripple class="flex align-items-center" :href="href" v-bind="props.action" @click="handleMenuItemClick(item.key)">
                                 <span class="ml-2"> {{ item.label }} </span>
                             </a>
                         </router-link>

@@ -16,11 +16,11 @@ export const getAleoPrice = (
 
 
 export const getLatestBlockAndSaveToLocalStorage = (
-    localStorageKey: string
+    key: string
 ): Promise<boolean> => {
     return $fetch('/api/block/latest')
         .then((response: any) => {
-            localStorage.setItem(localStorageKey, JSON.stringify(response));
+            localStorage.setItem(key, JSON.stringify(response));
             return true;
         })
         .catch(error => {

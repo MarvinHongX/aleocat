@@ -5,6 +5,13 @@ import AppFooter from './AppFooter.vue';
 
 const $primevue = usePrimeVue();
 const { layoutConfig, layoutState } = useLayout();
+const { LAYOUT_CONFIG_KEY } = useCommonConstant();
+
+
+onMounted(() => {
+    updateLayoutConfigFromLocalStorage(LAYOUT_CONFIG_KEY);
+});
+
 
 const containerClass = computed(() => {
     return {

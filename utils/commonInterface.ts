@@ -1,3 +1,22 @@
+export interface LayoutConfig {
+    darkTheme: boolean;
+    language: Language;
+    menuMode: string;
+    theme: string;
+    scale: number;
+    activeMenuItem: any;
+    isLoading: boolean;
+}
+
+export interface LayoutState {
+    staticMenuDesktopInactive: boolean;
+    overlayMenuActive: boolean;
+    profileSidebarVisible: boolean;
+    configSidebarVisible: boolean;
+    staticMenuMobileActive: boolean;
+    menuHoverActive: boolean;
+}
+
 export interface Language {
     name: string;
     code: string;

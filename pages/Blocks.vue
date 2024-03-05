@@ -15,7 +15,7 @@ const blockParams = ref<TableParams>({
 const labels = useLabels();
 const loadingState = useLoadingState();
 
-const { LOCAL_STORAGE_KEY } = useCommonConstant();
+const { LATEST_BLOCK_KEY } = useCommonConstant();
 
 const onBlockPage = (event: any) => {
     blockParams.value.currentPage = event.page + 1;
@@ -24,7 +24,7 @@ const onBlockPage = (event: any) => {
 
 
 onMounted(() => {
-    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY)) {
+    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LATEST_BLOCK_KEY)) {
         blockParams.value.totalRecords = latestBlock.value?.header?.metadata?.height ?? 1;
 
         fetchBlocksForPage(blockParams, loading2, blocks);

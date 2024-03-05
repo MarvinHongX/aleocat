@@ -20,6 +20,7 @@ export const getMenuItems = (selectedLanguage: Ref<Language>): MenuItem[] => {
     const menuItems: MenuItem[] = Object.keys(menuLabels[language]).map(key => ({
         label: menuLabels[language][key],
         route: key === 'home' ? '/' : `/${key}`,
+        key: key,
     }));
     return menuItems;
 };

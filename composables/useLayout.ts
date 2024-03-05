@@ -1,42 +1,61 @@
 import { toRefs, reactive, computed } from 'vue';
 
-const layoutConfig = reactive({
+const { LAYOUT_CONFIG_KEY } = useCommonConstant();
+    
+const layoutConfig = reactive<LayoutConfig>({
     darkTheme: false,
     language: {
-        code: 'ENG', 
+        code: 'ENG',
         name: 'English',
     },
     menuMode: 'overlay',
     theme: 'md-light-indigo',
     scale: 14,
-    activeMenuItem: null,
+    activeMenuItem: '',
+    isLoading: true,
 });
 
-const layoutState = reactive({
+const layoutState = reactive<LayoutState>({
     staticMenuDesktopInactive: false,
     overlayMenuActive: false,
     profileSidebarVisible: false,
     configSidebarVisible: false,
     staticMenuMobileActive: false,
-    menuHoverActive: false
+    menuHoverActive: false,
 });
 
+
 export const useLayout = () => {
-    const changeThemeSettings = (theme: string, darkTheme: boolean): void => {
-        layoutConfig.darkTheme = darkTheme;
-        layoutConfig.theme = theme;
+    const saveLayoutConfigToLocalStorage = (config: LayoutConfig): void => {
+        if (layoutConfig.isLoading !== true) {
+            localStorage.setItem(LAYOUT_CONFIG_KEY, JSON.stringify(config));
+        }
     };
 
-    const changeLanguageSettings = (language: Language): void => {
-        layoutConfig.language = language;
+    const setTheme = (theme: string, darkTheme: boolean): void => {
+        layoutConfig.darkTheme = darkTheme;
+        layoutConfig.theme = theme;
+        saveLayoutConfigToLocalStorage(layoutConfig);
     };
+
+    const setLanguage = (language: Language): void => {
+        layoutConfig.language = language;
+        saveLayoutConfigToLocalStorage(layoutConfig);
+    };
+
+    const setLoaded = (): void => {
+        layoutConfig.isLoading = false;
+        saveLayoutConfigToLocalStorage(layoutConfig);
+    }
 
     const setScale = (scale: number): void => {
         layoutConfig.scale = scale;
+        saveLayoutConfigToLocalStorage(layoutConfig);
     };
 
-    const setActiveMenuItem = (item: any): void => {
-        layoutConfig.activeMenuItem = item.value || item;
+    const setActiveMenuItem = (key: string): void => {
+        layoutConfig.activeMenuItem = key;
+        saveLayoutConfigToLocalStorage(layoutConfig);
     };
 
     const onMenuToggle = (): void => {
@@ -58,12 +77,13 @@ export const useLayout = () => {
     return {
         layoutConfig: toRefs(layoutConfig),
         layoutState: toRefs(layoutState),
-        changeThemeSettings,
-        changeLanguageSettings,
+        setTheme,
+        setLanguage,
+        setLoaded,
         setScale,
         onMenuToggle,
         isSidebarActive,
         isDarkTheme,
-        setActiveMenuItem
+        setActiveMenuItem,
     };
 }

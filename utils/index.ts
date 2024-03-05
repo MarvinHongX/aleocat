@@ -1,6 +1,14 @@
 import { getMenuItems, getLabels, getSentences } from '@/commons/commonLanguageService';
+const { setTheme, setLanguage, setLoaded, layoutConfig } = useLayout();
 
-const { changeThemeSettings, changeLanguageSettings, layoutConfig } = useLayout();
+
+export const saveSomethingToLocalStorage = (key: string, something: any): void => {
+    localStorage.setItem(key, JSON.stringify(something));
+};
+
+export const getSomethingFromLocalStorage = (key: string): any => {
+    return localStorage.getItem(key);
+};
 
 export const search = (searchValue: Ref<string>, toast: any, toastMessage: Ref<ToastMessage>): void => {
     let value: string = searchValue.value;
@@ -29,7 +37,23 @@ export const search = (searchValue: Ref<string>, toast: any, toastMessage: Ref<T
     searchValue.value = '';
 };
 
-export const onChangeTheme = (theme: string, mode: string): void => {
+export const updateLayoutConfigFromLocalStorage = (key: string) => {
+    const data: string | null = getSomethingFromLocalStorage(key);
+    if (data) {
+        const selectedLanguage = useSelectedLanguage();
+        try {
+            const newConfig: LayoutConfig = JSON.parse(data);
+            onChangeTheme(newConfig.theme, newConfig.darkTheme);
+            selectedLanguage.value = newConfig.language;
+            onChangeLanguage(selectedLanguage);
+        } catch (error) {
+            console.error('Error parsing layout configuration from local storage:', error);
+        };
+        setLoaded();
+    }
+};
+
+export const onChangeTheme = (theme: string, darkTheme: boolean): void => {
     const elementId: string = 'theme-css';
     const linkElement: HTMLLinkElement | null = document.getElementById(elementId) as HTMLLinkElement | null;
 
@@ -46,7 +70,7 @@ export const onChangeTheme = (theme: string, mode: string): void => {
                 if (linkElement.parentNode) {
                     linkElement.remove();
                     cloneLinkElement.setAttribute('id', elementId);
-                    changeThemeSettings(theme, mode === 'dark');
+                    setTheme(theme, darkTheme);
                 }
             });
             if (linkElement.parentNode) {
@@ -58,7 +82,7 @@ export const onChangeTheme = (theme: string, mode: string): void => {
 
 export const onChangeLanguage = (selectedLanguage: Ref<Language>): void => {
     const language: Language = selectedLanguage.value;
-    changeLanguageSettings(language);
+    setLanguage(language);
 
     const menuItems = useMenuItems();
     const labels = useLabels();
@@ -122,7 +146,6 @@ export const concatTransitionInputsOrOutputs = (inputs: TransitionInput[]): stri
     }, '').slice(0, -2); 
 };
 
-
 export const getElapsedTime = (timestamp: number): string => {
     let elapsedTime: string = '';
 
@@ -156,7 +179,6 @@ export const updateElapsedTime = (latestBlock: Ref<Block | null>, elapsedTime: R
     }
 };
 
-
 export const formatTimestamp = (timestamp: number | undefined, locale: string = 'en-US'): string => {
     if (timestamp === undefined) {
         return 'Invalid Timestamp';
@@ -187,7 +209,6 @@ export const formatTimestamp = (timestamp: number | undefined, locale: string = 
     }
 }; 
 
-
 export const formatTimestampYYYYMMDD = (timestamp: number | undefined, locale: string = 'en-US'): string => {
     if (timestamp === undefined) {
         return 'Invalid Timestamp';
@@ -206,7 +227,6 @@ export const formatTimestampYYYYMMDD = (timestamp: number | undefined, locale: s
     return `${year}-${month}-${day}`;
 }; 
 
-
 export const shortenStr = (str: string, prefixLength: number = 7, suffixLength: number = 7): string => {
     if (!str || typeof str !== 'string') {
         return '';
@@ -223,11 +243,9 @@ export const shortenStr = (str: string, prefixLength: number = 7, suffixLength: 
     return `${prefix}...${suffix}`;
 }
 
-
 export const formatNumberWithCommas = (num: number): string => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
 
 export const shortenNum = (num: number): string => {
     const TRILLION: number = 1e12;
@@ -306,7 +324,6 @@ export const getBondingState = (status: boolean): string => {
     }
 };
 
-
 export const proverScorePercentScaleClass = (rank: number): string => {
     if (rank === 1) {
         return 'text-red-500 ml-3 font-medium';
@@ -320,7 +337,6 @@ export const proverScorePercentScaleClass = (rank: number): string => {
         return 'text-blue-500 ml-3 font-medium';
     }
 };
-
 
 export const proverScorePercentScaleBarClass = (rank: number): string => {
     if (rank === 1) {

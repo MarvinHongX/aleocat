@@ -13,7 +13,7 @@ const labels = useLabels();
 const sentences = useSentences();
 const loadingState = useLoadingState();
 
-const { LOCAL_STORAGE_KEY } = useCommonConstant();
+const { LATEST_BLOCK_KEY } = useCommonConstant();
 
 const initFilters = () => {
     filters.value = {
@@ -24,7 +24,7 @@ const initFilters = () => {
 
 
 onMounted(() => {
-    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LOCAL_STORAGE_KEY)) {
+    if (getLatestBlockFromLocalStorage(latestBlock, loading1, LATEST_BLOCK_KEY)) {
         getLatestTransactions(latestBlock, loading3, transactions);
     }
 });
