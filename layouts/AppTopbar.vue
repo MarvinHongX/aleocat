@@ -25,7 +25,7 @@ const loadingState = useLoadingState();
 const toastMessage = useToastMessage();
 const elapsedTime = useLatestBlockElapsedTime();
 
-const { logoUrl, darkModeUrl, lightModeUrl } = useCommonComputed();
+const { logoUrl, darkTheme, darkModeUrl, lightModeUrl } = useCommonComputed();
 const { LATEST_BLOCK_KEY, INTERVAL_THRESHOLD, LOADING_THRESHOLD } = useCommonConstant();
 
 const handleSearch = () => {
@@ -77,7 +77,7 @@ onBeforeUnmount(() => {
                 <div class="layout-topbar-top-logo">
                     <router-link to="/" class="layout-topbar-logo">
                         <img :src="logoUrl" alt="logo" />
-                        <span class="layout-topbar-logo-name">Aleo Cat</span>
+                        <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
                     </router-link>
                 </div>
                 <div class="layout-topbar-top-info">
@@ -101,13 +101,13 @@ onBeforeUnmount(() => {
                     </div>
                 </div>  
                 <div class="layout-topbar-top-setting">
-                    <div class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', false)">
+                    <div v-if="darkTheme === true" class="flex flex-row">
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', false)">
                             <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
                         </button>
                     </div>
-                    <div class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', true)">
+                    <div v-else class="flex flex-row">
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', true)">
                             <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
                         </button>
                     </div>
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
                     <template #start>
                         <router-link to="/" class="layout-topbar-logo">
                             <img :src="logoUrl" alt="logo" />
-                            <span class="layout-topbar-logo-name">Aleo Cat</span>
+                            <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
                         </router-link>
                     </template>
                     <template #item="{ item, props }">

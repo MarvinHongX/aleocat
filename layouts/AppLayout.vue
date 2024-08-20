@@ -36,8 +36,8 @@ const containerClass = computed(() => {
             <div class="layout-main">
                 <NuxtPage />
             </div>
-            <app-footer></app-footer>
         </div>
+        <app-footer></app-footer>
         <div class="layout-mask"></div>
     </div>
 </template>

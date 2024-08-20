@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getValidators, getMinersInfo, fetchProversForPage, getTop10Growth, getDailyPower, getLatestBlockFromLocalStorage, getLatestBlocksAndTransactions } from '@/commons/commonService';
+const { skyzoneUrl } = useCommonComputed();
 
 const intervalId = ref<NodeJS.Timeout | null>(null);
 const loading1 = ref<boolean>(true);
@@ -360,14 +361,13 @@ onBeforeUnmount(() => {
         <div class="col-12 xl:col-6">
             <div
                 class="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3"
-                style="border-radius: 1rem; background: linear-gradient(0deg, rgba(0, 123, 255, 0.5), rgba(0, 123, 255, 0.5)), linear-gradient(92.54deg, #1c80cf 47.88%, #ffffff 100.01%)"
+                style="border-radius: 1rem; background-color:#1076e5;"
                 v-if="!loadingState"
             >
-                <div>
-                    <div class="text-blue-100 font-medium text-xl mt-2 mb-3">{{ sentences.skyzoneMsg1}}</div>
-                    <div class="text-white font-medium text-5xl">{{ sentences.skyzoneMsg2}}</div>
+                <div class="flex flex-column">
+                    <img :src="skyzoneUrl" alt="skyzone" height="100" class="mr-2" />
                 </div>
-                <div class="mt-4 mr-auto md:mt-0 md:mr-0">
+                <div class="px-4 py-4 flex flex-row justify-content-center">
                     <a href="https://theskyzone.net" target="_blank" class="p-button font-bold px-5 py-3 p-button-warning p-button-rounded p-button-raised"> {{ labels.getStarted}} </a>
                 </div>
             </div>

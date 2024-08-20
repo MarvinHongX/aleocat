@@ -1,6 +1,6 @@
 .layout-topbar {
     position: fixed;
-    height: 11rem;
+    height: 11.5rem;
     z-index: 997;
     left: 0;
     top: 0;
@@ -8,6 +8,7 @@
     padding: 5px 50px;
     background-color: var(--surface-card);
     align-items: center;
+    border-bottom: 2px solid var(--surface-300);
     box-shadow: 0px 3px 5px rgba(0,0,0,.02), 0px 0px 2px rgba(0,0,0,.05), 0px 1px 4px rgba(0,0,0,.08);
     transition: left $transitionDuration;
 
@@ -17,10 +18,16 @@
         align-items: center;
         color: var(--surface-900);
         font-size: 1.5rem;
-        font-weight: 500;
+        font-weight: 800;
         width: 140px;
         border-radius: 12px;
-
+        .aleo {
+            color: var(--aleo);
+        }
+        .cat {
+            color: var(--cat);
+            font-weight: 500;
+        }
         img {
             height: 2.5rem;
             margin-right: .5rem;
@@ -61,8 +68,8 @@
         }
 
         .layout-topbar-top-setting {
-            min-width: 180px;
-            max-width: 200px;
+            min-width: 150px;
+            max-width: 150px;
             width: 100%;
         }
     }
@@ -90,13 +97,13 @@
         .layout-topbar-body-menubar-end {
             width: 100%;
         }
-
         .layout-topbar-body-search .p-input-icon-left{
             width: 100%;
         }
         
         .layout-topbar-body-search .p-inputtext {
             width: 100%;
+            border-radius: 10px;
         }
     }
  
@@ -237,6 +244,7 @@
 
 @media (max-width: 991px) {
     .layout-topbar {
+        height: 11rem;
         .layout-topbar-top {
             padding: 10px;
         }
