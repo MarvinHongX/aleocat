@@ -6,7 +6,7 @@ export const useCommonComputed = () => {
     });
     
     const logoUrl = computed(() => {
-        return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-light.svg' : 'logo-color.png'}`;
+        return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-color.png' : 'logo-light.svg'}`;
     });
 
     const lightLogoUrl = computed(() => {
