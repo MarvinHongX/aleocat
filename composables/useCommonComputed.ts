@@ -2,7 +2,7 @@ const { layoutConfig } = useLayout();
 
 export const useCommonComputed = () => {
     const darkTheme = computed(() => {
-        return layoutConfig.darkTheme.value;
+        return layoutConfig.darkTheme.value ? true : false;
     });
     
     const logoUrl = computed(() => {
