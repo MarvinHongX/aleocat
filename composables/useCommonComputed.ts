@@ -2,11 +2,11 @@ const { layoutConfig } = useLayout();
 
 export const useCommonComputed = () => {
     const darkTheme = computed(() => {
-        return layoutConfig.darkTheme.value ? true : false;
+        return layoutConfig.darkTheme.value !== true ? false : true;
     });
     
     const logoUrl = computed(() => {
-        return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-color.png' : 'logo-light.svg'}`;
+        return `/layout/images/${layoutConfig.darkTheme.value !== true ? 'logo-light.svg' : 'logo-color.png'}`;
     });
 
     const lightLogoUrl = computed(() => {
@@ -14,11 +14,11 @@ export const useCommonComputed = () => {
     });
 
     const darkModeUrl = computed(() => {
-        return `/layout/images/${layoutConfig.darkTheme.value ? 'dark-mode' : 'dark-mode-light'}.svg`;
+        return `/layout/images/dark-mode-light.svg`;
     });
 
     const lightModeUrl = computed(() => {
-        return `/layout/images/${layoutConfig.darkTheme.value ? 'light-mode' : 'light-mode-light'}.svg`;
+        return `/layout/images/light-mode.svg`;
     });
 
     const skyzoneUrl = computed(() => {
