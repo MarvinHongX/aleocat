@@ -101,14 +101,14 @@ onBeforeUnmount(() => {
                     </div>
                 </div>  
                 <div class="layout-topbar-top-setting">
-                    <div v-if="darkTheme === true" class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', false)">
-                            <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
+                    <div v-if="darkTheme && (darkTheme === true)" class="flex flex-row">
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', false)">
+                            <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
                         </button>
                     </div>
                     <div v-else class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', true)">
-                            <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
+                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', true)">
+                            <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
                         </button>
                     </div>
                     <div class="flex flex-row">
