@@ -74,7 +74,7 @@ onMounted(() => {
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.previousBlockHash }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
                     >
-                    <NuxtLink :to="'/block/' + block?.previous_hash">
+                    <NuxtLink class="text-blue-600" :to="'/block/' + block?.previous_hash">
                         <div class="data-non-shorten-950">
                             {{ block?.previous_hash }}
                         </div>
@@ -210,7 +210,7 @@ onMounted(() => {
                     <Column>
                         <template #header v-if="!loadingState"> {{ labels.transactionId }} </template>
                         <template #body="{ data }">
-                            <NuxtLink :to="'/transaction/' + data.transactionId">
+                            <NuxtLink class="text-blue-600" :to="'/transaction/' + data.transactionId">
                                 <div class="flex align-items-center gap-2">
                                     <span>
                                         <div class="data-non-shorten-950">
@@ -281,7 +281,7 @@ onMounted(() => {
                     <Column>
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
-                            <NuxtLink :to="'/account/' + data.address">
+                            <NuxtLink class="text-blue-600" :to="'/account/' + data.address">
                                 <div class="flex align-items-center gap-2">
                                     <div class="data-non-shorten-950">
                                         {{ data.address }}

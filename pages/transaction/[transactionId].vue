@@ -57,7 +57,7 @@ onMounted(() => {
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.inBlock }}</span>
                     <span class="text-900 line-height-3" v-if="!loading5"
                     >
-                        <NuxtLink :to="'/block/' + transaction?.blockHeight" rel="noopener">
+                        <NuxtLink class="text-blue-600" :to="'/block/' + transaction?.blockHeight" rel="noopener">
                             {{ transaction?.blockHeight.toLocaleString() }}
                         </NuxtLink>
                     </span>
@@ -67,8 +67,6 @@ onMounted(() => {
                     <span class="text-900 line-height-3" v-if="!loading5">{{ formatTimestamp(transaction?.timestamp) }}</span>
                 </div>
             </div>
-
-
 
             <div class="card">
                 <h5 v-if="!loadingState"> {{ labels.transitions }} </h5>

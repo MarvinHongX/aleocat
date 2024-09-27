@@ -53,7 +53,7 @@ onMounted(() => {
                     <span class="block text-600 font-medium mb-4 mr-4" v-if="!loadingState"> {{ labels.transaction }}</span>
                     <span class="text-900 line-height-3" v-if="!loading9"
                     >
-                        <NuxtLink v-if="program?.transactionId" :to="'/transaction/' + program.transactionId" rel="noopener">
+                        <NuxtLink class="text-blue-600" v-if="program?.transactionId" :to="'/transaction/' + program.transactionId" rel="noopener">
                             <div class="data-non-shorten-950">
                                 {{ program?.transactionId }}
                             </div>

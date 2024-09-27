@@ -169,6 +169,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Finalize Root',
             KOR: '최종 루트'
         },
+        from: {
+            ENG: 'from',
+            KOR: '발신'
+        },
         functionName: {
             ENG: 'Function Name',
             KOR: '함수명'
@@ -353,6 +357,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Round',
             KOR: '라운드'
         },
+        solutionId: {
+            ENG: 'Solution ID',
+            KOR: '솔루션 ID'
+        },
         solutions: {
             ENG: 'Solutions',
             KOR: '솔루션들'
@@ -385,9 +393,17 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Subdag Root',
             KOR: '서브다그 루트'
         },
+        target: {
+            ENG: 'Target',
+            KOR: '대상'
+        },
         timestamp: {
             ENG: 'Timestamp',
             KOR: '타임스탬프'
+        },
+        to: {
+            ENG: 'to',
+            KOR: '수신'
         },
         totalStake: {
             ENG: 'Total Stake',

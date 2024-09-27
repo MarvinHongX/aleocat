@@ -57,7 +57,7 @@ onMounted(() => {
                         <template #header v-if="!loadingState"> {{ labels.programName }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <NuxtLink v-if="data.name" :to="'/program/' + data.name">
+                                <NuxtLink class="text-blue-600" v-if="data.name" :to="'/program/' + data.name">
                                     <div class="data-non-shorten-950">
                                         {{ data.name }}
                                     </div>

@@ -156,17 +156,22 @@ export interface Transition {
     address: string;
 }
 
+export interface Solution {
+    solution_id: string;
+    block_hash: string;
+    height: number;
+    time: string;
+    address: string;
+    target: number;
+    reward: number;
+}
+
+
+
 export interface TableParams {
     currentPage: number;
     pageSize: number;
     totalRecords: number;
-}
-
-export interface Solution {
-    address: string;
-    nonce: string;
-    commitment: string;
-    sortNo: string;
 }
 
 export interface Program {

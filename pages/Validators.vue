@@ -66,7 +66,7 @@ onMounted(() => {
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <NuxtLink v-if="data.address" :to="'/account/' + data.address">
+                                <NuxtLink class="text-blue-600" v-if="data.address" :to="'/account/' + data.address">
                                     <div class="data-non-shorten-950">
                                         {{ data.address }}
                                     </div>

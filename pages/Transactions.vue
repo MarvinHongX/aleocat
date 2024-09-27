@@ -71,7 +71,7 @@ const clearFilter = () => {
                         <template #header v-if="!loadingState"> {{ labels.transactionId }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <NuxtLink v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
+                                <NuxtLink class="text-blue-600" v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
                                     <div class="data-non-shorten-950">
                                         {{ data.transactionId }}
                                     </div>

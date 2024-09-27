@@ -60,7 +60,7 @@ onMounted(() => {
                     <Column field="header.metadata.height" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.blockHeight }} </template>
                         <template #body="{ data }">
-                            <NuxtLink :to="'/block/' + data.header.metadata.height">
+                            <NuxtLink class="text-blue-600" :to="'/block/' + data.header.metadata.height">
                                 {{ data.header.metadata.height.toLocaleString() }}
                             </NuxtLink>
                         </template>

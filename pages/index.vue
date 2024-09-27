@@ -191,7 +191,7 @@ onBeforeUnmount(() => {
                     <span>
                         <h5 v-if="!loadingState"> {{ labels.latestBlocks }} </h5>
                     </span>
-                    <NuxtLink to="/blocks">
+                    <NuxtLink class="text-blue-600" to="/blocks">
                         <span class="p-input-icon-left mb-1 text-500 font-medium"> {{ labels.more }}&nbsp;> </span>
                     </NuxtLink>  
                 </div>
@@ -213,7 +213,7 @@ onBeforeUnmount(() => {
                     <Column field="header.metadata.height" dataType="numeric" style="width: 15%">
                         <template #header v-if="!loadingState"> {{ labels.blockHeight }} </template>
                         <template #body="{ data }">
-                            <NuxtLink v-if="data.header.metadata.height" :to="'/block/' + data.header.metadata.height">
+                            <NuxtLink class="text-blue-600" v-if="data.header.metadata.height" :to="'/block/' + data.header.metadata.height">
                                 <span>{{ data.header.metadata.height.toLocaleString() }}</span>
                             </NuxtLink>
                             <span v-else>{{ data.header.metadata.height.toLocaleString() }}</span>     
@@ -259,7 +259,7 @@ onBeforeUnmount(() => {
                     <Column style="width: 15%">
                         <template #header v-if="!loadingState"> {{ labels.transactionId }}  </template>
                         <template #body="{ data }">
-                            <NuxtLink v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
+                            <NuxtLink class="text-blue-600" v-if="data.transactionId" :to="'/transaction/' + data.transactionId" rel="noopener">
                                 <div class="data-non-shorten-650">
                                     {{ data.transactionId }}
                                 </div>
@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
                         <template #header v-if="!loadingState"> {{ labels.address }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <NuxtLink v-if="data.address" :to="'/account/' + data.address">
+                                <NuxtLink class="text-blue-600" v-if="data.address" :to="'/account/' + data.address">
                                     <div class="data-non-shorten-950">
                                         {{ data.address }}
                                     </div>

@@ -571,11 +571,32 @@ export const getAccountTransitions = (
         const addr: string = address.value;
         $fetch(`/api/account/transitions/${addr}`)
             .then((response: any) => {
-                transitions.value = response;
+                transitions.value = response.Transfers;
                 if (loading8.value) loading8.value = false;
             })
             .catch(error => {
                 console.error('Error fetching account transitions:', error);
+                return false;
+            });
+    }
+};
+
+
+
+export const getAccountSolutions = (
+    address: Ref<string>, 
+    loading17: Ref<boolean>, 
+    solutions: Ref<Solution[]>
+): void => {
+    if (address.value) {
+        const addr: string = address.value;
+        $fetch(`/api/account/solutions/${addr}`)
+            .then((response: any) => {
+                solutions.value = response.data;
+                if (loading17.value) loading17.value = false;
+            })
+            .catch(error => {
+                console.error('Error fetching account solutions:', error);
                 return false;
             });
     }
