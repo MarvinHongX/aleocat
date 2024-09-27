@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { getPrograms } from '@/commons/commonService';
+import { fetchProgramsForPage } from '@/commons/commonService';
 
 const filters = ref<any>(null);
 const loading4 = ref<boolean>(true);
@@ -10,24 +10,21 @@ const programs = ref<Program[]>([]);
 const labels = useLabels();
 const sentences = useSentences();
 const loadingState = useLoadingState();
+const tableParams = ref<TableParams>({
+    currentPage: 0,
+    pageSize: 100,
+    totalRecords: 1
+});
 
-const initFilters = () => {
-    filters.value = {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        "id":  { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-    };
+
+const onProgramPage = (event: any) => {
+    tableParams.value.currentPage = event.page;
+    fetchProgramsForPage(tableParams, loading4, programs);
 };
-
 
 onMounted(() => {
-    getPrograms(loading4, programs);
+    fetchProgramsForPage(tableParams, loading4, programs);
 });
-initFilters();
-
-const clearFilter = () => {
-    initFilters();
-};
-
 
 </script>
 
@@ -37,56 +34,50 @@ const clearFilter = () => {
             <div class="card">
                 <h5 v-if="!loadingState"> {{ labels.programs }} </h5>
                 <DataTable
-                    v-model:filters="filters"
                     :value="programs"
+                    lazy 
                     paginator
+                    :first="((tableParams.currentPage) * tableParams.pageSize) + 1"
+                    :rows="tableParams.pageSize"
+                    :totalRecords="tableParams.totalRecords"
                     showGridlines
-                    :rows="50"
                     dataKey="id"
                     filterDisplay="menu"
-                    :sortField="'block_height'"
+                    :sortField="'height'"
                     :sortOrder="-1" 
                     :loading="loading4"
-                    :globalFilterFields="['id']"
+                    :currentPage="tableParams.currentPage - 1"
+                    @page="onProgramPage($event)"
                 >
-                    <template #header>
-                        <div class="flex justify-content-between" v-if="!loadingState">
-                            <Button type="button" icon="pi pi-filter-slash" :label="labels.clear" outlined @click="clearFilter()" />
-                            <span class="p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" :sentence="sentences.keywordSearch" />
-                            </span>
-                        </div>
-                    </template>
                     <template #empty v-if="!loadingState"> {{ labels.noDataFound }} </template>
                     <template #loading> 
                         <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="rgba(255, 255, 255, 0)" animationDuration="1s" aria-label="ProgressSpinner" />
                     </template>
-                    <Column filterField="id" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }">
-                        <template #header v-if="!loadingState"> {{ labels.programId }} </template>
+                    <Column filterField="name" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }">
+                        <template #header v-if="!loadingState"> {{ labels.programName }} </template>
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
-                                <NuxtLink v-if="data.id" :to="'/program/' + data.id">
+                                <NuxtLink v-if="data.name" :to="'/program/' + data.name">
                                     <div class="data-non-shorten-950">
-                                        {{ data.id }}
+                                        {{ data.name }}
                                     </div>
                                     <div class="data-shorten-950">
-                                        {{ shortenStr(data.id, 10, 1) }}
+                                        {{ shortenStr(data.name, 10, 1) }}
                                     </div>
                                 </NuxtLink>
                             </div>
                         </template>
                     </Column>
-                    <Column filterField="block_height" dataType="numeric">
+                    <Column filterField="height" dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.inBlock }} </template>
                         <template #body="{ data }">
-                            {{ data.block_height?.toLocaleString() }}
+                            {{ data.height?.toLocaleString() }}
                         </template>
                     </Column>
-                    <Column filterField="block_timestamp" dataType="datetime">
+                    <Column filterField="timestamp" dataType="datetime">
                         <template #header v-if="!loadingState"> {{ labels.timestamp }} </template>
                         <template #body="{ data }">
-                            {{ formatTimestamp(data.block_timestamp) }}
+                            {{ formatTimestamp(data.timestamp) }}
                         </template>
                     </Column>
                 </DataTable>

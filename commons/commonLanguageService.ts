@@ -285,6 +285,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Program ID',
             KOR: '프로그램 ID'
         },
+        programName: {
+            ENG: 'Program Name',
+            KOR: '프로그램 이름'
+        },
         programs: {
             ENG: 'Programs',
             KOR: '프로그램들'

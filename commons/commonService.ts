@@ -384,21 +384,22 @@ export const getDailyPower = (
 
 
 
-export const getPrograms = (
-    loading9: Ref<boolean>, 
+export const fetchProgramsForPage = (
+    tableParams: Ref<TableParams>,
+    loading4: Ref<boolean>, 
     programs: Ref<Program[]>
-): Promise<boolean> => {
-    $fetch('/api/programs')
+): void => {
+    const { currentPage, pageSize } = tableParams.value;
+    $fetch(`/api/programs?page=${currentPage}&pageSize=${pageSize}`)
         .then((response: any) => {
-            programs.value = response;
-            if (loading9.value) loading9.value = false;
-            return true;
+            programs.value = response.programs;
+            tableParams.value.totalRecords = response.count;
+
+            if (loading4.value) loading4.value = false;
         })
         .catch(error => {
             console.error('Error fetching programs:', error);
-            return false;
         });
-    return Promise.resolve(false);
 };
 
 

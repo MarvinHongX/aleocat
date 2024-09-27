@@ -76,12 +76,12 @@ onBeforeUnmount(() => {
             <div class="layout-topbar-top">
                 <div class="layout-topbar-top-logo">
                     <router-link to="/" class="layout-topbar-logo">
-                        <img :src="logoUrl" alt="logo" />
+                        <img :src="logoUrl" width="35" alt="logo" />
                         <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
                     </router-link>
                 </div>
                 <div class="layout-topbar-top-info">
-                    <div class="flex flex-row">
+                    <div class="flex flex-row" v-if="false">
                         <span class="text-900" v-if="!loadingState">{{ labels.aleoPrice }}:&nbsp;&nbsp;</span>
                         <span class="text-green-500 font-medium" v-if="!loading12"
                             >${{ aleoPrice.toLocaleString() }}
@@ -120,7 +120,7 @@ onBeforeUnmount(() => {
                 <Menubar class="layout-topbar-body-menubar" :model="menuItems" v-if="!loadingState">
                     <template #start>
                         <router-link to="/" class="layout-topbar-logo">
-                            <img :src="logoUrl" alt="logo" />
+                            <img :src="logoUrl" width="35" alt="logo" />
                             <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
                         </router-link>
                     </template>
