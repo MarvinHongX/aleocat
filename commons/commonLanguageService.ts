@@ -165,6 +165,10 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Epoch',
             KOR: '에폭'
         },
+        estimatedValue: {
+            ENG: 'Estimated Value',
+            KOR: '추정 가치'
+        },
         executeTransitions: {
             ENG: 'Execute Transitions',
             KOR: '트랜지션 실행'

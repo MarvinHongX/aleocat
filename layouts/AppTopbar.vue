@@ -50,15 +50,16 @@ const intervalAction = () => {
     }
     getLatestBlockFromLocalStorage(latestBlock, loading1, LATEST_BLOCK_KEY);
     updateElapsedTime(latestBlock, elapsedTime);
-    if (loading12.value){
-        getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
-    }
+    // if (loading12.value){
+    //     getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
+    // }
 }
 
 onMounted(() => {
     selectedLanguage.value = layoutConfig.language.value;
 
     onChangeLanguage(selectedLanguage);
+    getAleoPrice(aleoPrice, aleoPriceChangePercentage, loading12);
     intervalAction();
     intervalId.value = setInterval(intervalAction, INTERVAL_THRESHOLD);
 });
@@ -81,7 +82,7 @@ onBeforeUnmount(() => {
                     </router-link>
                 </div>
                 <div class="layout-topbar-top-info">
-                    <div class="flex flex-row" v-if="false">
+                    <div class="flex flex-row">
                         <span class="text-900" v-if="!loadingState">{{ labels.aleoPrice }}:&nbsp;&nbsp;</span>
                         <span class="text-green-500 font-medium" v-if="!loading12"
                             >${{ aleoPrice.toLocaleString() }}

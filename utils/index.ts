@@ -134,6 +134,19 @@ export const toAleoScale = (value: string | number | undefined, fractionDigits: 
     return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
 };
 
+export const toAleoScaleUSDT = (value: string | number | undefined, aleoPrice: number, fractionDigits: number = 6): string => {
+    let result: number = 0;
+
+    if (typeof value === 'string' && value.endsWith('u64')) {
+        result = parseInt(value, 10);
+    } else {
+        result = value as number;
+    }
+
+    const scaledResult: string = (result / 1000000.0 * aleoPrice).toFixed(fractionDigits);
+    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
+};
+
 export const toProverPowerScale = (value: number, fractionDigits: number = 2): string => {
     const scaledResult: string =  (value / 1000000.0)?.toFixed(fractionDigits)
     return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });

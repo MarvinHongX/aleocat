@@ -73,11 +73,6 @@ export interface TransitionInput {
     value: string;
 }
 
-export interface AleoPrice {
-    price: number;
-    changePercentage: number;
-}
-
 export interface Block {
     block_hash: string;
     previous_hash: string;

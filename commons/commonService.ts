@@ -4,9 +4,12 @@ export const getAleoPrice = (
     loading12: Ref<boolean>, 
 ): void => {
     $fetch('/api/price')
-        .then((response: AleoPrice) => {
-            aleoPrice.value = response.price;
-            aleoPriceChangePercentage.value = response.changePercentage;
+        .then((response: any) => {
+            console.log(response)
+            aleoPrice.value = response.data.ALEO.quote.USD.price;
+            aleoPriceChangePercentage.value = response.data.ALEO.quote.USD.percent_change_24h;
+            // aleoPrice.value = response.quotes.USD.price;
+            // aleoPriceChangePercentage.value = response.quotes.USD.market_cap_change_24h;
             if (loading12.value) loading12.value = false;
         })
         .catch(error => {
