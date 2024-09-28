@@ -134,12 +134,12 @@ export const toAleoScale = (value: string | number | undefined, fractionDigits: 
     return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits });
 };
 
-export const toProverScoreScale = (value: number, fractionDigits: number = 6): string => {
+export const toProverPowerScale = (value: number, fractionDigits: number = 2): string => {
     const scaledResult: string =  (value / 1000000.0)?.toFixed(fractionDigits)
-    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 });
+    return Number(scaledResult).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
-export const toProverScorePercentScale = (score: number, totalPower: number): string => {
+export const toProverPowerPercentScale = (score: number, totalPower: number): string => {
     if (totalPower !== 0) {
         const percentage = (score * 100 / totalPower).toFixed(2);
         return percentage;

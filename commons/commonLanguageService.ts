@@ -133,6 +133,14 @@ export const getLabels = (selectedLanguage: Ref<Language>): Record<string, strin
             ENG: 'Commitment',
             KOR: '약정'
         },
+        comission: {
+            ENG: 'Comission',
+            KOR: '커미션'
+        },
+        credits: {
+            ENG: 'Credits',
+            KOR: '크레딧' 
+        },
         creditsStaked: {
             ENG: 'Credits Staked',
             KOR: '스테이킹된 크레딧'

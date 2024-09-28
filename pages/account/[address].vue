@@ -82,7 +82,7 @@ onMounted(() => {
                                                 {{ data.from }}
                                             </div>
                                             <div class="data-shorten-950">
-                                                {{ shortenStr(data.from ?? '', 7, 1) }}
+                                                {{ shortenStr(data.from ?? '', 7, 5) }}
                                             </div>
                                         </div>
                                     </template>
@@ -106,7 +106,7 @@ onMounted(() => {
                                                 {{ data.to }}
                                             </div>
                                             <div class="data-shorten-950">
-                                                {{ shortenStr(data.to ?? '', 7, 1) }}
+                                                {{ shortenStr(data.to ?? '', 7, 5) }}
                                             </div>
                                         </div>
                                     </template>
@@ -185,9 +185,6 @@ onMounted(() => {
                         </p>
                     </TabPanel>
                 </TabView>
-            </div>
-            <div class="card">
-                
             </div>
         </div>
     </div>

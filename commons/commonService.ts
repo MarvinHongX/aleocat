@@ -223,15 +223,17 @@ export const getValidators = (
 ): Promise<boolean> => {
     $fetch('/api/validators')
         .then((response: any) => {
+            console.log(response.members)
             const responseValidators: any = response;
             latestCommittee.value = response
             const membersData: any = responseValidators.members;
 
             const sortedMembers: any = Object.entries(membersData)
-                .map(([address, [stake, bondingState]]: any) => ({
+                .map(([address, [stake, bondingState, comission]]: any) => ({
                     address,
                     stake,
-                    bondingState
+                    bondingState,
+                    comission
                 }))
                 .sort((a: any, b: any) => b.stake - a.stake);
 
@@ -274,10 +276,10 @@ export const fetchProversForPage = (
                 prover.rank = index + 1 + (pageSize * currentPage);
             });
 
-            $fetch('/api/info/reward')
+            $fetch('/api/info/power')
             .then((response: any) => {
                 sortedProvers.forEach((prover: any) => {
-                    prover.totalPower = response.total;
+                    prover.totalPower = response.power;
                 });
                 provers.value = sortedProvers;
             });

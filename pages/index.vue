@@ -330,22 +330,28 @@ onBeforeUnmount(() => {
                                         {{ data.address }}
                                     </div>
                                     <div class="data-shorten-950">
-                                        {{ shortenStr(data.address,7,1) }}
+                                        {{ shortenStr(data.address,7,4) }}
                                     </div>
                                 </NuxtLink>
                             </div>
                         </template>
                     </Column>
                     <Column dataType="numeric">
+                        <template #header v-if="!loadingState"> {{ labels.credits }} </template>
+                        <template #body="{ data }">
+                            {{ toAleoScale(data.score) }}
+                        </template>
+                    </Column>
+                    <Column dataType="numeric">
                         <template #header v-if="!loadingState"> {{ labels.powerOfRatio }} </template>
                         <template #body="{ data }">
                             <span class="data-non-shorten-500">
-                                {{ toProverScoreScale(data.score) }}
+                                {{ toProverPowerScale(data.power) }}M
                             </span>
-                            <span :class="proverScorePercentScaleClass(data.rank)">{{ toProverScorePercentScale(data.score, data.totalPower) }}%</span>
+                            <span :class="proverScorePercentScaleClass(data.rank)">{{ toProverPowerPercentScale(data.power, data.totalPower) }}%</span>
 
                             <div class="data-non-shorten-500 surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px;">
-                                <div :class="proverScorePercentScaleBarClass(data.rank)" :style="{ width: toProverScorePercentScale(data.score, data.totalPower) + '%' }"></div>
+                                <div :class="proverScorePercentScaleBarClass(data.rank)" :style="{ width: toProverPowerPercentScale(data.power, data.totalPower) + '%' }"></div>
                             </div>
                          </template>
                     </Column>
