@@ -115,7 +115,7 @@ onMounted(() => {
                                 dataKey="transition"
                                 :sortField="'height'"
                                 :sortOrder="-1" 
-                                v-if="!loading8"
+                                v-if="!loading8 && !loading10"
                             >
                                 <template #empty v-if="!loadingState"> {{ labels.noDataFound }} </template>
                                 <template #loading> 
@@ -125,12 +125,24 @@ onMounted(() => {
                                     <template #header v-if="!loadingState"> {{ labels.from }} </template>
                                     <template #body="{ data }">
                                         <div class="flex align-items-center gap-2">
-                                            <div class="data-non-shorten-950">
-                                                {{ data.from }}
-                                            </div>
-                                            <div class="data-shorten-950">
-                                                {{ shortenStr(data.from ?? '', 7, 5) }}
-                                            </div>
+                                            <template v-if="account?.address === data?.from">
+                                                <div class="data-non-shorten-950">
+                                                    {{ data.from }}
+                                                </div>
+                                                <div class="data-shorten-950">
+                                                    {{ shortenStr(data.from ?? '', 7, 5) }}
+                                                </div>                                                
+                                            </template>
+                                            <template v-else>
+                                                <NuxtLink class="text-blue-600" v-if="data.from" :to="'/account/' + data.from">
+                                                    <div class="data-non-shorten-950">
+                                                        {{ data.from }}
+                                                    </div>
+                                                    <div class="data-shorten-950">
+                                                        {{ shortenStr(data.from ?? '', 7, 5) }}
+                                                    </div>
+                                                </NuxtLink>
+                                            </template>
                                         </div>
                                     </template>
                                 </Column>
@@ -149,12 +161,24 @@ onMounted(() => {
                                     <template #header v-if="!loadingState"> {{ labels.to }} </template>
                                     <template #body="{ data }">
                                         <div class="flex align-items-center gap-2">
-                                            <div class="data-non-shorten-950">
-                                                {{ data.to }}
-                                            </div>
-                                            <div class="data-shorten-950">
-                                                {{ shortenStr(data.to ?? '', 7, 5) }}
-                                            </div>
+                                            <template v-if="account?.address === data?.to">
+                                                <div class="data-non-shorten-950">
+                                                    {{ data.to }}
+                                                </div>
+                                                <div class="data-shorten-950">
+                                                    {{ shortenStr(data.to ?? '', 7, 5) }}
+                                                </div>
+                                            </template>
+                                            <template v-else>
+                                                <NuxtLink class="text-blue-600" v-if="data.to" :to="'/account/' + data.to">
+                                                    <div class="data-non-shorten-950">
+                                                        {{ data.to }}
+                                                    </div>
+                                                    <div class="data-shorten-950">
+                                                        {{ shortenStr(data.to ?? '', 7, 5) }}
+                                                    </div>
+                                                </NuxtLink>
+                                            </template>
                                         </div>
                                     </template>
                                 </Column>

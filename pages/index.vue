@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
                     </span>
                     <NuxtLink class="text-blue-600" to="/blocks">
                         <span class="p-input-icon-left mb-1 text-500 font-medium"> {{ labels.more }}&nbsp;> </span>
-                    </NuxtLink>  
+                    </NuxtLink>
                 </div>
                 <DataTable 
                     :value="blocks" 
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
                             <NuxtLink class="text-blue-600" v-if="data.header.metadata.height" :to="'/block/' + data.header.metadata.height">
                                 <span>{{ data.header.metadata.height.toLocaleString() }}</span>
                             </NuxtLink>
-                            <span v-else>{{ data.header.metadata.height.toLocaleString() }}</span>     
+                            <span v-else>{{ data.header.metadata.height.toLocaleString() }}</span>
                         </template>
                     </Column>
                     <Column field="block_hash"  style="width: 15%">
