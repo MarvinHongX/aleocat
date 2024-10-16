@@ -22,6 +22,7 @@
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.18.9",
+        "@nuxt/image": "^1.8.1",
         "@nuxtjs/sitemap": "^5.1.0",
         "eslint": "^8.30.0",
         "eslint-config-prettier": "^8.5.0",

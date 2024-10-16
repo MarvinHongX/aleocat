@@ -362,7 +362,9 @@ export const getDailyPower = (
 ): void => {
     $fetch('/api/info/reward')
         .then((response: any) => {
-            const responseData = response.power || [];
+            // const responseData = response.power || [];
+            const responseData = response.power.reverse() || [];
+
             const labels: string[] = responseData.map((item: any) => item.date.toString());
             const rewards: number[] = responseData.map((item: any) => parseFloat(item.reward) / 1000000.0);
 

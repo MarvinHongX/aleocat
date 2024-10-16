@@ -58,7 +58,30 @@
         }
 
         .layout-topbar-top-info {
-            width: 30rem;
+            min-width: 400px;
+            max-width: 400px;
+            .layout-topbar-top-info-price {
+                display: flex;
+                align-items: center; 
+            }
+            .layout-topbar-top-info-block {
+                display: flex;
+            }
+            .layout-topbar-top-info-logo-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px; /* Adjust this value to control the size */
+                height: 30px; /* Same as width for a circular shape */
+                border-radius: 50%; /* Makes the wrapper circular */
+                overflow: hidden; /* Ensures the image stays inside the circle */
+            }
+            .layout-topbar-top-info-logo {
+                width: 100%; /* Makes the image fit the wrapper */
+                height: 100%; /* Ensures the image scales within the circle */
+                object-fit: cover; /* Maintains the aspect ratio while filling the wrapper */
+                border-radius: 50%; /* Ensures the image itself is circular */
+            }
         }
 
         .layout-topbar-top-info span {
@@ -68,9 +91,17 @@
         }
 
         .layout-topbar-top-setting {
-            min-width: 150px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 108px;
             max-width: 150px;
-            width: 100%;
+            width: 150px;
+
+            .p-dropdown {
+                min-width: 90px;
+                max-width: 110px;
+            }
         }
     }
 
@@ -189,8 +220,12 @@
                 display: inline;          
             }  
             .layout-topbar-top-info {
-                display: none;
-                width: 0;
+                // display: none;
+                min-width: 150px;
+                max-width: 200px;
+                .layout-topbar-top-info-block {
+                    display: none;
+                }
             }
     
             .layout-topbar-top-info .flex.flex-row > span {
@@ -242,14 +277,15 @@
     }
 }
 
+
 @media (max-width: 991px) {
     .layout-topbar {
         height: 11rem;
         .layout-topbar-top {
             padding: 10px;
-        }
-        .layout-topbar-top {
-            padding: 10px;
+            .layout-topbar-top-logo {
+                width: 50px;
+            }  
         }
         .layout-topbar-body {
             .layout-topbar-body-menubar {
@@ -268,3 +304,24 @@
         }
     }
 }
+
+@media (max-width: 450px) {
+    .layout-topbar {
+        height: 10rem;
+        .layout-topbar-top {
+            padding: 5px;
+            .layout-topbar-top-logo {
+                width: 35px;
+            }  
+            .layout-topbar-top-info {
+                max-width: 100px;
+                .layout-topbar-top-info-price {
+                    .layout-topbar-top-info-logo-wrapper {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+

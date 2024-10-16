@@ -43,10 +43,7 @@ export default defineNuxtConfig({
             ]
         }
     },
-    modules: [
-        'nuxt-primevue',
-        '@nuxtjs/sitemap',
-    ],
+    modules: ['nuxt-primevue', '@nuxtjs/sitemap', "@nuxt/image"],
     primevue: {
         options: { ripple: true },
         components: {

@@ -25,7 +25,7 @@ const loadingState = useLoadingState();
 const toastMessage = useToastMessage();
 const elapsedTime = useLatestBlockElapsedTime();
 
-const { logoUrl, darkTheme, darkModeUrl, lightModeUrl } = useCommonComputed();
+const { logoUrl, darkTheme, darkModeUrl, lightModeUrl, aleoLogoUrl } = useCommonComputed();
 const { LATEST_BLOCK_KEY, INTERVAL_THRESHOLD, LOADING_THRESHOLD } = useCommonConstant();
 
 const handleSearch = () => {
@@ -78,20 +78,24 @@ onBeforeUnmount(() => {
                 <div class="layout-topbar-top-logo">
                     <router-link to="/" class="layout-topbar-logo">
                         <img :src="logoUrl" width="35" alt="logo" />
-                        <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
+                        <!-- <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span> -->
                     </router-link>
                 </div>
                 <div class="layout-topbar-top-info">
-                    <div class="flex flex-row">
-                        <span class="text-900" v-if="!loadingState">{{ labels.aleoPrice }}:&nbsp;&nbsp;</span>
-                        <span class="text-green-500 font-medium" v-if="!loading12"
-                            >${{ aleoPrice.toLocaleString() }}
+                    <div class="layout-topbar-top-info-price">
+                        <div class="layout-topbar-top-info-logo-wrapper" >
+                            <NuxtImg :src="aleoLogoUrl" alt="aleoLogo" class="layout-topbar-top-info-logo" />
+                        </div>
+                        &nbsp;&nbsp;
+                        <span class="text-black-500 font-bold text-xl" v-if="!loading12">
+                            ${{ aleoPrice.toLocaleString() }}
                         </span>
-                        <span :class="{ 'text-blue-500': aleoPriceChangePercentage > 0, 'text-red-500': aleoPriceChangePercentage < 0 }" v-if="!loading12"
-                            >&nbsp;{{ aleoPriceChangePercentage > 0 ? '+' : '' }}{{ aleoPriceChangePercentage.toLocaleString() }}%
-                        </span>                        
+                        &nbsp;&nbsp;
+                        <span :class="{ 'text-blue-500 text-sm': aleoPriceChangePercentage > 0, 'text-red-500  text-sm': aleoPriceChangePercentage < 0 }" v-if="!loading12"
+                            >{{ aleoPriceChangePercentage > 0 ? '+' : '' }}{{ aleoPriceChangePercentage.toLocaleString() }}%
+                        </span>                   
                     </div>
-                    <div class="flex flex-row">
+                    <div class="layout-topbar-top-info-block">
                         <span class="text-900" v-if="!loadingState">{{ labels.blockHeight }}:&nbsp;&nbsp;</span>
                         <span class="text-blue-500 font-medium"  v-if="!loading1"
                             >{{ latestBlock?.header.metadata.height.toLocaleString() }}

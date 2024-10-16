@@ -25,6 +25,10 @@ export const useCommonComputed = () => {
         return `/layout/images/skyzone.svg`;
     });
 
+    const aleoLogoUrl = computed(() => {
+        return `/layout/images/aleoLogo.jpeg`;
+    });
+
     return {
         darkTheme,
         logoUrl,
@@ -32,5 +36,6 @@ export const useCommonComputed = () => {
         darkModeUrl,
         lightModeUrl,
         skyzoneUrl,
+        aleoLogoUrl,
     };
 };
