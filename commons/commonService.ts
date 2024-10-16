@@ -4,12 +4,13 @@ export const getAleoPrice = (
     loading12: Ref<boolean>, 
 ): void => {
     $fetch('/api/price')
-        .then((response: any) => {
-            console.log(response)
-            aleoPrice.value = response.data.ALEO.quote.USD.price;
-            aleoPriceChangePercentage.value = response.data.ALEO.quote.USD.percent_change_24h;
-            // aleoPrice.value = response.quotes.USD.price;
-            // aleoPriceChangePercentage.value = response.quotes.USD.market_cap_change_24h;
+        .then((response: any) => {            
+            const openPrice = parseFloat(response.open);
+            const lastPrice = parseFloat(response.last);
+                
+            aleoPrice.value = lastPrice;
+            aleoPriceChangePercentage.value = ((lastPrice - openPrice) / openPrice) * 100;
+
             if (loading12.value) loading12.value = false;
         })
         .catch(error => {
@@ -226,7 +227,6 @@ export const getValidators = (
 ): Promise<boolean> => {
     $fetch('/api/validators')
         .then((response: any) => {
-            console.log(response.members)
             const responseValidators: any = response;
             latestCommittee.value = response
             const membersData: any = responseValidators.members;
