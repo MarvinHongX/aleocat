@@ -50,6 +50,14 @@
         .layout-topbar-top-logo {
             display: none;          
         }    
+
+        .layout-topbar-top-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
         .layout-topbar-top-info,
         .layout-topbar-top-setting {
             display: flex;
@@ -283,9 +291,6 @@
         height: 11rem;
         .layout-topbar-top {
             padding: 10px;
-            .layout-topbar-top-logo {
-                width: 50px;
-            }  
         }
         .layout-topbar-body {
             .layout-topbar-body-menubar {
@@ -300,19 +305,24 @@
         .layout-topbar-body {
             .layout-topbar-body-menubar .p-menubar-end {
                 width: 100%;
-            }
+                margin-right: 0.5rem;
+            }   
         }
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 550px) {
     .layout-topbar {
         height: 10rem;
         .layout-topbar-top {
             padding: 5px;
-            .layout-topbar-top-logo {
-                width: 35px;
-            }  
+            .layout-topbar-logo {
+                width: 45px;
+                padding: 5px;
+                span {
+                    display: none;
+                }
+            }
             .layout-topbar-top-info {
                 max-width: 100px;
                 .layout-topbar-top-info-price {
@@ -324,4 +334,3 @@
         }
     }
 }
-

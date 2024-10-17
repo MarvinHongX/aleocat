@@ -78,48 +78,51 @@ onBeforeUnmount(() => {
                 <div class="layout-topbar-top-logo">
                     <router-link to="/" class="layout-topbar-logo">
                         <img :src="logoUrl" width="35" alt="logo" />
-                        <!-- <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span> -->
+                        <span class="layout-topbar-logo-name"><span class="aleo">ALEO</span><span class="cat">CAT</span></span>
                     </router-link>
                 </div>
-                <div class="layout-topbar-top-info">
-                    <div class="layout-topbar-top-info-price">
-                        <div class="layout-topbar-top-info-logo-wrapper" >
-                            <NuxtImg :src="aleoLogoUrl" alt="aleoLogo" class="layout-topbar-top-info-logo" />
+                <div class="layout-topbar-top-wrapper">
+                    <div class="layout-topbar-top-info">
+                        <div class="layout-topbar-top-info-price">
+                            <div class="layout-topbar-top-info-logo-wrapper" >
+                                <NuxtImg :src="aleoLogoUrl" alt="aleoLogo" class="layout-topbar-top-info-logo" />
+                            </div>
+                            &nbsp;&nbsp;
+                            <span class="text-black-500 font-bold text-xl" v-if="!loading12">
+                                ${{ aleoPrice.toLocaleString() }}
+                            </span>
+                            &nbsp;&nbsp;
+                            <span :class="{ 'text-blue-500 text-sm': aleoPriceChangePercentage > 0, 'text-red-500  text-sm': aleoPriceChangePercentage < 0 }" v-if="!loading12"
+                                >{{ aleoPriceChangePercentage > 0 ? '+' : '' }}{{ aleoPriceChangePercentage.toLocaleString() }}%
+                            </span>                   
                         </div>
-                        &nbsp;&nbsp;
-                        <span class="text-black-500 font-bold text-xl" v-if="!loading12">
-                            ${{ aleoPrice.toLocaleString() }}
-                        </span>
-                        &nbsp;&nbsp;
-                        <span :class="{ 'text-blue-500 text-sm': aleoPriceChangePercentage > 0, 'text-red-500  text-sm': aleoPriceChangePercentage < 0 }" v-if="!loading12"
-                            >{{ aleoPriceChangePercentage > 0 ? '+' : '' }}{{ aleoPriceChangePercentage.toLocaleString() }}%
-                        </span>                   
-                    </div>
-                    <div class="layout-topbar-top-info-block">
-                        <span class="text-900" v-if="!loadingState">{{ labels.blockHeight }}:&nbsp;&nbsp;</span>
-                        <span class="text-blue-500 font-medium"  v-if="!loading1"
-                            >{{ latestBlock?.header.metadata.height.toLocaleString() }}
-                        </span>
-                        <span class="text-gray-500 font-medium" v-if="!loading1"
-                            >&nbsp;&nbsp;&nbsp;{{ elapsedTime }}
-                        </span>
-                    </div>
-                </div>  
-                <div class="layout-topbar-top-setting">
-                    <div v-if="darkTheme && (darkTheme === true)" class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', false)">
-                            <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
-                        </button>
-                    </div>
-                    <div v-else class="flex flex-row">
-                        <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', true)">
-                            <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
-                        </button>
-                    </div>
-                    <div class="flex flex-row">
-                        <Dropdown v-model="selectedLanguage" :options="languages" optionLabel="name" />
+                        <div class="layout-topbar-top-info-block">
+                            <span class="text-900" v-if="!loadingState">{{ labels.blockHeight }}:&nbsp;&nbsp;</span>
+                            <span class="text-blue-500 font-medium"  v-if="!loading1"
+                                >{{ latestBlock?.header.metadata.height.toLocaleString() }}
+                            </span>
+                            <span class="text-gray-500 font-medium" v-if="!loading1"
+                                >&nbsp;&nbsp;&nbsp;{{ elapsedTime }}
+                            </span>
+                        </div>
+                    </div>  
+                    <div class="layout-topbar-top-setting">
+                        <div v-if="darkTheme && (darkTheme === true)" class="flex flex-row">
+                            <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-light-indigo', false)">
+                                <img :src="darkModeUrl" class="w-2rem h-2rem" alt="Material Dark Indigo" />
+                            </button>
+                        </div>
+                        <div v-else class="flex flex-row">
+                            <button class="p-link w-2rem h-2rem" @click="onChangeTheme('md-dark-indigo', true)">
+                                <img :src="lightModeUrl" class="w-2rem h-2rem" alt="Material Light Indigo" />
+                            </button>
+                        </div>
+                        <div class="flex flex-row">
+                            <Dropdown v-model="selectedLanguage" :options="languages" optionLabel="name" />
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="layout-topbar-body">
                 <Menubar class="layout-topbar-body-menubar" :model="menuItems" v-if="!loadingState">
