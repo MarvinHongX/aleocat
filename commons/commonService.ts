@@ -315,25 +315,46 @@ export const getTop10Growth = (
         .then((response: any) => {
             const responseData = response.data;
 
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0]; 
+
+
             // Calculate the total scores for each address
             const addressScores: { [address: string]: number } = {};
+            const allLabels: string[] = [];
+
             Object.keys(responseData).forEach((key: string) => {
                 const addressData = responseData[key];
-                const totalScore = addressData.reduce((acc: number, item: any) => acc + item.value, 0);
+
+                const filteredData = addressData.filter((item: any) => {
+                    const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
+                    return itemDate !== todayString; 
+                });
+
+                const totalScore = filteredData.reduce((acc: number, item: any) => acc + item.value, 0);
                 addressScores[key] = totalScore;
+
+                filteredData.forEach((item: any) => {
+                    const itemDate = formatTimestampYYYYMMDD(item.timestamp);
+                    if (!allLabels.includes(itemDate) && itemDate !== todayString) {
+                        allLabels.push(itemDate);
+                    }
+                });
             });
 
-            // Sort addresses based on total scores
             const sortedAddresses = Object.keys(addressScores).sort((a, b) => addressScores[b] - addressScores[a]);
 
-            const labels: string[] = responseData[Object.keys(responseData)[0]].map((item: any) => formatTimestampYYYYMMDD(item.timestamp));
-
             const lineChartData: LineChart = {
-                labels: labels,
+                labels: allLabels, 
                 datasets: sortedAddresses.map((address: string, index: number) => {
                     const dataset = {
                         label: shortenStr(address),
-                        data: responseData[address].map((item: any) => item.value / 1000000.0),
+                        data: responseData[address]
+                            .filter((item: any) => {
+                                const itemDate = new Date(item.timestamp * 1000).toISOString().split('T')[0];
+                                return itemDate !== todayString; // 오늘 날짜 제외
+                            })
+                            .map((item: any) => item.value / 1000000.0),
                         fill: false,
                         backgroundColor: '',
                         borderColor: '',
@@ -365,8 +386,16 @@ export const getDailyPower = (
             // const responseData = response.power || [];
             const responseData = response.power.reverse() || [];
 
-            const labels: string[] = responseData.map((item: any) => item.date.toString());
-            const rewards: number[] = responseData.map((item: any) => parseFloat(item.reward) / 1000000.0);
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0]; 
+
+            const filteredData = responseData.filter((item: any) => {
+                const itemDate = new Date(item.date).toISOString().split('T')[0];
+                return itemDate !== todayString; // 오늘 날짜와 다른 항목만 포함
+            });
+
+            const labels: string[] = filteredData.map((item: any) => item.date.toString());
+            const rewards: number[] = filteredData.map((item: any) => parseFloat(item.reward) / 1000000.0);
 
             const lineChartData: LineChart = {
                 labels: labels,
