@@ -1,5 +1,8 @@
+@use "./_mixins" as mixins;
+@use "./_variables" as variables;
+
 .layout-footer {
-    transition: margin-left $transitionDuration;
+    transition: margin-left variables.$transitionDuration;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -43,7 +46,7 @@
         }
 
         &:focus {
-            @include focused();
+            @include mixins.focused();
         }
     }
     

@@ -1,3 +1,6 @@
+@use "./_mixins" as mixins;
+@use "./_variables" as variables;
+
 .layout-menu {
     margin: 0;
     padding: 0;
@@ -48,8 +51,8 @@
             color: var(--text-color);
             cursor: pointer;
             padding: 0.75rem 1rem;
-            border-radius: $borderRadius;
-            transition: background-color $transitionDuration, box-shadow $transitionDuration;
+            border-radius: variables.$borderRadius;
+            transition: background-color variables.$transitionDuration, box-shadow variables.$transitionDuration;
 
             .layout-menuitem-icon {
                 margin-right: 0.5rem;
@@ -58,7 +61,7 @@
             .layout-submenu-toggler {
                 font-size: 75%;
                 margin-left: auto;
-                transition: transform $transitionDuration;
+                transition: transform variables.$transitionDuration;
             }
 
             &.active-route {
@@ -71,13 +74,13 @@
             }
 
             &:focus {
-                @include focused-inset();
+                @include mixins.focused-inset();
             }
         }
 
         ul {
             overflow: hidden;
-            border-radius: $borderRadius;
+            border-radius: variables.$borderRadius;
 
             li {
                 a {
