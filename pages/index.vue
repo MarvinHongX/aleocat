@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
                     <div>
                         <span class="block text-500 font-medium mb-3" v-if="!loadingState">{{ labels.networkMiners }}</span>
                         <div class="text-900 font-medium text-xl"
-                            >{{ minersInfo?.total.toLocaleString() }}
+                            >{{ minersInfo?.total?.toLocaleString() }}
                         </div>
                     </div>
                 </div>

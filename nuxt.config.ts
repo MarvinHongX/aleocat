@@ -16,13 +16,22 @@ export default defineNuxtConfig({
 
   app: {
       head: {
-          title: 'ALEO CAT | aleo explorer',
+          title: 'Aleocat - Aleo Chain Explorer',
           meta: [
-              { charset: 'utf-8' },
-              { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-              { hid: 'description', name: 'description', content: 'Your Premier Block Explorer and Analytics Platform for Aleo' },
-              { name: "google-site-verification", content: "fRM5FTZ5bZt5MRpwplDneJwVFNFflKfq-jVZrpXB3kc" },
-            ],
+            { charset: 'utf-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { hid: 'description', name: 'description', content: 'Your Premier Block Explorer and Analytics Platform for Aleo' },
+            { name: 'keywords', content: 'aleo, explorer, aleo explorer, aleocat, aleo block explorer, block explorer' },
+            { name: "google-site-verification", content: "fRM5FTZ5bZt5MRpwplDneJwVFNFflKfq-jVZrpXB3kc" },
+
+            // ✅ Open Graph
+            { property: 'og:type', content: 'website' },
+            { property: 'og:title', content: 'Aleocat - Aleo Chain Explorer' },
+            { property: 'og:site_name', content: 'Aleocat - Aleo Chain Explorer' },
+            { property: 'og:description', content: 'Your Premier Block Explorer and Analytics Platform for Aleo' },
+            { property: 'og:image', content: 'https://aleocat.com/layout/images/logo-color.png' },
+            { property: 'og:url', content: 'https://aleocat.com' }
+          ],
           script: [
               { src: 'https://www.googletagmanager.com/gtag/js?id=UA-93461466-1' },
               {
