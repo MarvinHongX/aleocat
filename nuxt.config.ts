@@ -1,13 +1,11 @@
 export default defineNuxtConfig({
   runtimeConfig: {
       apiSecret: process.env.API_PRIVATE_KEY,
-      public: {
-          apiBase: process.env.API_URL,
-          apiBase2: process.env.API_URL2,
-          apiBase3: process.env.API_URL3,
-          apiBasePrice: process.env.API_URL_PRICE,
-          apiPriceKey: process.env.API_PRICE_KEY,
-      },
+      apiBase: process.env.API_URL,
+      apiBase2: process.env.API_URL2,
+      apiBase3: process.env.API_URL3,
+      apiBasePrice: process.env.API_URL_PRICE,
+      apiPriceKey: process.env.API_PRICE_KEY
   },
 
   typescript: {

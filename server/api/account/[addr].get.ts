@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event: any) => {
     const config  = useRuntimeConfig();
-    const apiBase: string = config.public.apiBase;
+    const apiBase: string = config.apiBase as string;
     const addr: string = event.context.params.addr;
     const url: string = `${apiBase}/program/credits.aleo/mapping/account/${addr}`;
     const response: any = await $fetch(url);
