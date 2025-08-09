@@ -1,41 +1,24 @@
+import logoLightUrl from '/assets/images/logo-light.svg';
+import logoColorUrl from '/assets/images/logo-color.webp';
+import darkModeUrl from '/assets/images/dark-mode-light.svg';
+import lightModeUrl from '/assets/images/light-mode.svg';
+import skyzoneUrl from '/assets/images/skyzone.svg';
+import aleoLogoUrl from '/assets/images/aleoLogo.webp';
+
 const { layoutConfig } = useLayout();
 
 export const useCommonComputed = () => {
-    const darkTheme = computed(() => {
-        return layoutConfig.darkTheme.value !== true ? false : true;
-    });
-    
-    const logoUrl = computed(() => {
-        return `/layout/images/${layoutConfig.darkTheme.value && (layoutConfig.darkTheme.value === true) ? 'logo-light.svg' : 'logo-color.png'}`;
-    });
+  const darkTheme = computed(() => layoutConfig.darkTheme.value === true);
 
-    const lightLogoUrl = computed(() => {
-        return `/layout/images/logo-light.svg`;
-    });
+  const logoUrl = computed(() => (darkTheme.value ? logoLightUrl : logoColorUrl));
 
-    const darkModeUrl = computed(() => {
-        return `/layout/images/dark-mode-light.svg`;
-    });
-
-    const lightModeUrl = computed(() => {
-        return `/layout/images/light-mode.svg`;
-    });
-
-    const skyzoneUrl = computed(() => {
-        return `/layout/images/skyzone.svg`;
-    });
-
-    const aleoLogoUrl = computed(() => {
-        return `/layout/images/aleoLogo.jpeg`;
-    });
-
-    return {
-        darkTheme,
-        logoUrl,
-        lightLogoUrl,
-        darkModeUrl,
-        lightModeUrl,
-        skyzoneUrl,
-        aleoLogoUrl,
-    };
+  return {
+    darkTheme,
+    logoUrl,
+    lightLogoUrl: logoLightUrl,
+    darkModeUrl,
+    lightModeUrl,
+    skyzoneUrl,
+    aleoLogoUrl,
+  };
 };
