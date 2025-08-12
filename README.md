@@ -5,6 +5,10 @@ Visit [ALEO CAT](https://aleocat.com) Aleo explore.
 ## Setup
 
 ```bash
+nvm install 20.19.0
+```
+
+```bash
 npm install
 ```
 
