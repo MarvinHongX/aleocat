@@ -112,7 +112,7 @@ onMounted(() => {
                                 paginator
                                 showGridlines
                                 :rows="50"
-                                dataKey="transition"
+                                dataKey="transition_id"
                                 :sortField="'height'"
                                 :sortOrder="-1" 
                                 v-if="!loading8 && !loading10"
@@ -125,21 +125,21 @@ onMounted(() => {
                                     <template #header v-if="!loadingState"> {{ labels.from }} </template>
                                     <template #body="{ data }">
                                         <div class="flex align-items-center gap-2">
-                                            <template v-if="account?.address === data?.from">
+                                            <template v-if="account?.address === data.transfer_from?.address">
                                                 <div class="data-non-shorten-950">
-                                                    {{ data.from }}
+                                                    {{ data.transfer_from.address }}
                                                 </div>
                                                 <div class="data-shorten-950">
-                                                    {{ shortenStr(data.from ?? '', 7, 5) }}
+                                                    {{ shortenStr(data.transfer_from.address ?? '', 7, 5) }}
                                                 </div>                                                
                                             </template>
                                             <template v-else>
-                                                <NuxtLink class="text-blue-600" v-if="data.from" :to="'/account/' + data.from">
+                                                <NuxtLink class="text-blue-600" v-if="data.transfer_from?.address" :to="'/account/' + data.transfer_from.address">
                                                     <div class="data-non-shorten-950">
-                                                        {{ data.from }}
+                                                        {{ data.transfer_from.address }}
                                                     </div>
                                                     <div class="data-shorten-950">
-                                                        {{ shortenStr(data.from ?? '', 7, 5) }}
+                                                        {{ shortenStr(data.transfer_from.address ?? '', 7, 5) }}
                                                     </div>
                                                 </NuxtLink>
                                             </template>
@@ -150,10 +150,10 @@ onMounted(() => {
                                     <template #header v-if="!loadingState"> {{ labels.transferAmount }} </template>
                                     <template #body="{ data }">
                                         <div class="data-non-shorten-950">
-                                            {{ toAleoScale(data.value) }}
+                                            {{ toAleoScale(data.credits) }}
                                         </div>
                                         <div class="data-shorten-950">
-                                            {{ toAleoScale(data.value, 2) }}
+                                            {{ toAleoScale(data.credits, 2) }}
                                         </div>
                                     </template>
                                 </Column>
@@ -161,21 +161,21 @@ onMounted(() => {
                                     <template #header v-if="!loadingState"> {{ labels.to }} </template>
                                     <template #body="{ data }">
                                         <div class="flex align-items-center gap-2">
-                                            <template v-if="account?.address === data?.to">
+                                            <template v-if="account?.address === data.transfer_to?.address">
                                                 <div class="data-non-shorten-950">
-                                                    {{ data.to }}
+                                                    {{ data.transfer_to.address }}
                                                 </div>
                                                 <div class="data-shorten-950">
-                                                    {{ shortenStr(data.to ?? '', 7, 5) }}
+                                                    {{ shortenStr(data.transfer_to.address ?? '', 7, 5) }}
                                                 </div>
                                             </template>
                                             <template v-else>
-                                                <NuxtLink class="text-blue-600" v-if="data.to" :to="'/account/' + data.to">
+                                                <NuxtLink class="text-blue-600" v-if="data.transfer_to?.address" :to="'/account/' + data.transfer_to.address">
                                                     <div class="data-non-shorten-950">
-                                                        {{ data.to }}
+                                                        {{ data.transfer_to.address }}
                                                     </div>
                                                     <div class="data-shorten-950">
-                                                        {{ shortenStr(data.to ?? '', 7, 5) }}
+                                                        {{ shortenStr(data.transfer_to.address ?? '', 7, 5) }}
                                                     </div>
                                                 </NuxtLink>
                                             </template>

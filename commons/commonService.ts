@@ -607,7 +607,8 @@ export const getAccountTransitions = (
         const addr: string = address.value;
         $fetch(`/api/account/transitions/${addr}`)
             .then((response: any) => {
-                transitions.value = response.Transfers;
+                // transitions.value = response.Transfers;
+                 transitions.value = response.transactions ?? [];
                 if (loading8.value) loading8.value = false;
             })
             .catch(error => {

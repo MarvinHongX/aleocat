@@ -4,6 +4,7 @@ export default defineNuxtConfig({
       apiBase: process.env.API_URL,
       apiBase2: process.env.API_URL2,
       apiBase3: process.env.API_URL3,
+      apiBase4: process.env.API_URL4,
       apiBasePrice: process.env.API_URL_PRICE,
       apiPriceKey: process.env.API_PRICE_KEY
   },
